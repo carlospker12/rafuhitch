@@ -37,7 +37,9 @@ def blank():
 def register():
     return render_template('register.html' )
 
-
+@app.route('/driver_profile')
+def driver_profile():
+    return render_template('Driver_Profile.html' )
 
 if __name__ == "__main__":
     app.run(debug=True)
