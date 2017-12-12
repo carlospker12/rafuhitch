@@ -17,6 +17,10 @@ def charts():
 def tables():
     return render_template('tables.html' )
 
+@app.route('/ridedetails')
+def ridedetails():
+    return render_template('ridedetails.html' )
+
 @app.route('/navbar')
 def navbar():
     return render_template('navbar.html' )
