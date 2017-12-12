@@ -1,12 +1,14 @@
+<html>
 {% include "navbar2.html" %}
-  <div class="content-wrapper">
+<title>List of Rides</title>
+<<div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="#">Create a Ride</a>
         </li>
-        <li class="breadcrumb-item active">List of Rides</li>
+        <li class="breadcrumb-item active"> List of Rides</li>
       </ol>
       <!-- Example DataTables Card-->
       <div class="card mb-3">
@@ -19,29 +21,33 @@
                 <tr>
                   <th>Name</th>
                   <th>Starting Position</th>
-                  <th>Ending Position</th>
+                  <th>Destination</th>
                   <th>Date/Time</th>
-                  <th>Cost</th>
-                    <th>Link</th>
+                  <th>Ride Details</th>
                 </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>Dave Vid</td>
-                <td>Ang Mo Kio</td>
-                <td>Yio Yu Keng</td>
-                <td>12/2 18:00</td>
-                <td>$5</td>
-                  <td><a href=ridedetails>Link</a></td>
-              </tr>
-              <tr>
-                <td>Evan Chua</td>
-                <td>Hougang</td>
-                <td>Orchard</td>
-                <td>12/2 12:00</td>
-                <td>$1</td>
-              </tr>
-
+                <tr>
+                  <td>Dave Vid</td>
+                    <td>Ang Mo Kio</td>
+                    <td>Jurong East</td>
+                    <td>12/12 18:12</td>
+                    <td><a href=ridedetails>Link</a></td>
+                </tr>
+                <tr>
+                  <td>Mr P</td>
+                    <td>NYP</td>
+                    <td>Bedok</td>
+                    <td>12/2 11:12</td>
+                    <td>$10</td>
+                </tr>
+                <tr>
+                    <td>Ee Vaan</td>
+                    <td>Bishan</td>
+                    <td>Orchard Road</td>
+                    <td>2/12 19:01</td>
+                    <td>$20</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -81,15 +87,29 @@
       </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
-    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="/static/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="/static/js/sb-admin.min.js"></script>
+    <script src="js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
-    <script src="/static/js/sb-admin-datatables.min.js"></script>
+    <script src="js/sb-admin-datatables.min.js"></script>
   </div>
+    <!-- Bootstrap core JavaScript-->
+      <script src="/static/vendor/jquery/jquery.min.js"></script>
+      <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+      <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+      <script src="/static/vendor/datatables/jquery.dataTables.js"></script>
+      <script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+      <script src="/static/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+      <script src="/static/js/sb-admin-datatables.min.js"></script>
+    </div>
+</html>
