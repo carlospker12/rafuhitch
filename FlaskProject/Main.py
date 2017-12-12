@@ -9,7 +9,7 @@ def login():
 def charts():
     return render_template('charts.html' )
 
-@app.route('/listofrideP')
+@app.route('/listofridep')
 def tables():
     return render_template('listofridesP.html' )
 
