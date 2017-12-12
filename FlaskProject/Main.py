@@ -29,5 +29,9 @@ def register():
 def driver_profile():
     return render_template('Driver_Profile.html' )
 
+@app.route('/registerdriver')
+def register_driver():
+    return render_template('register_driver.html' )
+
 if __name__ == "__main__":
     app.run(debug=True)
