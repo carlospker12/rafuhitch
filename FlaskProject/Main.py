@@ -25,7 +25,7 @@ def ridedetails():
 def register():
     return render_template('register.html' )
 
-@app.route('/driver_profile')
+@app.route('/driverprofile')
 def driver_profile():
     return render_template('Driver_Profile.html' )
 
