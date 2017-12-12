@@ -9,9 +9,9 @@ def start():
 def login():
     return render_template('login.html')
 
-@app.route('/charts')
+@app.route('/createridedriver')
 def charts():
-    return render_template('charts.html' )
+    return render_template('create_ride_driver.html' )
 
 @app.route('/listofridesp')
 def tables():
