@@ -76,7 +76,7 @@ def tables():
         eachupdate = listofridesp[id]
 
         if eachupdate['type'] == 'driver':
-            createride = Createdriverride( eachupdate['from'], eachupdate['to'],
+            createride = Createdriverride(eachupdate['from'], eachupdate['to'],
                                 eachupdate['date'], eachupdate['time'])
             createride.set_type(type)
             print(createride.get_type())
