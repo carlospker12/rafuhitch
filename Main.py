@@ -24,12 +24,14 @@ class createdriverrideform(Form):
     type = RadioField('Type Of Publication', choices=[('driver')], default='type')
 
 
-@app.route('/')
-def start():
-    return render_template('login.html')
-
-@app.route('/login')
+@app.route('/login', methods =["GET","POST"])
 def login():
+    if  request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        if email == "google@google.com":
+            if password == "password":
+                return render_template("listofridesP.html")
     return render_template('login.html')
 
 @app.route('/createridedriver',methods=["GET","POST"])
