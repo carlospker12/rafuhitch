@@ -17,11 +17,11 @@ app = Flask(__name__)
 
 
 class createdriverrideform(Form):
-    from_where = StringField('From')
-    to_where = StringField('To')
+    from_where = StringField('Starting Position')
+    to_where = StringField('Destination')
     date = StringField('Date')
     time = StringField('Time')
-    type = RadioField('Type Of Publication', choices=[('driver')], default='type')
+    userid = StringField('driver')
 
 
 @app.route('/', methods =["GET","POST"])
@@ -38,21 +38,22 @@ def login():
 def new():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.type.data == 'driver':
+        if  form.userid.data == 'driver':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
             time = form.time.data
+            userid = form.userid.data
 
-            cdr = Createdriverride(from_where,to_where,date,time)
+            cdr = Createdriverride(userid,from_where,to_where,date,time)
 
-            cdr_db = root.child('listofrides')
+            cdr_db = root.child('listofridesp')
             cdr_db.push({
-                    'type': cdr.get_type(),
-                    'from': cdr.get_from_where(),
-                    'to': cdr.get_to(),
+                    'Starting position': cdr.get_from_where(),
+                    'Destination': cdr.get_to(),
                     'date': cdr.get_date(),
                     'time': cdr.get_time(),
+                    'usertype':cdr.get_userid()
 
             })
 
@@ -60,7 +61,7 @@ def new():
 
 
 
-        return redirect(url_for('listofridesp'))
+            return redirect(url_for('login'))
 
 
     return render_template('create_ride_driver.html', form= form)
@@ -71,15 +72,15 @@ def new():
 def tables():
     listofridesp = root.child('listofridesp').get()
     list = []
-    for id in listofridesp:
+    for userid in listofridesp:
 
         eachupdate = listofridesp[id]
 
-        if eachupdate['type'] == 'driver':
-            createride = Createdriverride(eachupdate['from'], eachupdate['to'],
-                                eachupdate['date'], eachupdate['time'])
-            createride.set_type(type)
-            print(createride.get_type())
+        if eachupdate['userid'] == 'driver':
+            createride = Createdriverride( eachupdate['from'], eachupdate['to'],
+                                eachupdate['date'], eachupdate['time'],eachupdate['userid'])
+            createride.set_userid(userid)
+            print(createride.get_userid())
             list.append(createride)
     return render_template('listofridesP.html' )
 
@@ -87,7 +88,7 @@ def tables():
 def ridedetails():
     return render_template('ridedetails.html' )
 
-@app.route('/register', method= ["GET","POST"])
+@app.route('/register')
 def register():
     return render_template('register.html' )
 
