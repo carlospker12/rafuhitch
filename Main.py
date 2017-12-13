@@ -24,7 +24,7 @@ class createdriverrideform(Form):
     type = RadioField('Type Of Publication', choices=[('driver')], default='type')
 
 
-@app.route('/login', methods =["GET","POST"])
+@app.route('/', methods =["GET","POST"])
 def login():
     if  request.method == "POST":
         email = request.form["email"]
@@ -34,7 +34,7 @@ def login():
                 return render_template("listofridesP.html")
     return render_template('login.html')
 
-@app.route('/createridedriver',methods=["GET","POST"])
+@app.route('/',methods=["GET","POST"])
 def new():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
@@ -67,7 +67,7 @@ def new():
 
 
 
-@app.route('/listofridesp')
+@app.route('/')
 def tables():
     listofridesp = root.child('listofridesp').get()
     list = []
@@ -83,19 +83,19 @@ def tables():
             list.append(createride)
     return render_template('listofridesP.html' )
 
-@app.route('/ridedetails')
+@app.route('/')
 def ridedetails():
     return render_template('ridedetails.html' )
 
-@app.route('/register')
+@app.route('/')
 def register():
     return render_template('register.html' )
 
-@app.route('/driverprofile')
+@app.route('/')
 def driver_profile():
     return render_template('Driver_Profile.html' )
 
-@app.route('/registerdriver')
+@app.route('/')
 def register_driver():
     return render_template('register_driver.html' )
 
