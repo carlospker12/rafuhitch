@@ -24,7 +24,7 @@ class createdriverrideform(Form):
     type = RadioField('Type Of Publication', choices=[('driver')], default='type')
 
 
-@app.route('/login', methods =["GET","POST"])
+@app.route('/', methods =["GET","POST"])
 def login():
     if  request.method == "POST":
         email = request.form["email"]
