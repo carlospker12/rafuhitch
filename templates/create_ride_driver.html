@@ -1,0 +1,33 @@
+
+{% from "includes/_formhelper.html" import render_field %}
+<form method="POST" action="">
+        <div class="form-group">
+            {{ render_field(form.from_where, class_="form-control") }}
+        </div>
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ render_field(form.to_where, class_="form-control") }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ render_field(form.date, class_="form-control") }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ render_field(form.time, class_="form-control") }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-11">
+
+
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="submit" value="Submit" class="btn btn-info"/>
+                </div>
+            </div>
+        </div>
+
+</form>
