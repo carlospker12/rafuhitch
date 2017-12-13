@@ -26,23 +26,27 @@
             <div class="form-row">
               <div class="col-md-6">
                 <label for="Name">Name</label>
-                <input class="form-control" id="Name" type="text" aria-describedby="nameHelp" placeholder="Enter your name as in NRIC">
+                <input class="form-control" id="Name" type="text" aria-describedby="nameHelp" placeholder="eg. Alkamah Jeng Han">
               </div>
             </div>
           </div>
+            <div class = 'form-group'>
+                <label for = 'nric'>NRIC</label>
+                <input class = 'form-control' id="nric" placeholder="S12345678A">
+            </div>
             <div class="form-group">
-            <label for="Email">Email Address</label>
-            <input class="form-control" id="Email" type="email" aria-describedby="emailHelp" placeholder="Enter Email">
+                <label for="Email">Email Address</label>
+                <input class="form-control" id="Email" type="email" placeholder="Enter Email">
             </div>
 
             <div class="form-group">
                 <label for="phonenumber">Phone number</label>
-                <input class="form-control" id="phonenumber" type="number" placeholder="Enter Phone Number">
+                <input class="form-control" id="phonenumber" type="tel" placeholder="Enter Phone Number">
             </div>
 
             <div class="form-group">
                 <label for="licenseno">License Plate Number</label>
-                <input class="form-control" id="licenseno" type="text" placeholder="Enter License Plate Number">
+                <input class="form-control" id="licenseno" type="text" placeholder="eg: SLK8888A">
             </div>
 
             <div class="form-group">
@@ -58,7 +62,10 @@
                     </div>
                 </div>
             </div>
-          <a class="btn btn-primary btn-block" href="login.html">Register</a>
+            <div>
+            <a class="btn btn-primary btn-block" href="login.html">Register</a>
+            <input type="reset" value="Reset">
+            </div>
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="login.html">Login Page</a>
