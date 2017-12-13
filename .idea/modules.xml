@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/OOPP-RAFUHITCH.iml" filepath="$PROJECT_DIR$/.idea/OOPP-RAFUHITCH.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/FlaskProject.iml" filepath="$PROJECT_DIR$/.idea/FlaskProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../functions/.idea/functions.iml" filepath="$PROJECT_DIR$/../functions/.idea/functions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SEM2/.idea/itp112.iml" filepath="$PROJECT_DIR$/../SEM2/.idea/itp112.iml" />
     </modules>
   </component>
 </project>
