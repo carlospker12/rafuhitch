@@ -91,7 +91,7 @@ def ridedetails():
 
 @app.route('/register', methods=["GET","POST"])
 def register():
-    if request.method=="POST":
+    if request.method == "POST":
         name=request.form["name"]
         email=request.form["email"]
         password=request.form["password"]
@@ -104,7 +104,6 @@ def register():
             "Email":userinfo.get_email(),
             "Password":userinfo.get_password()
         })
-        flash("Successfully Register",'success')
         return redirect(url_for("listofridesP"))
 
     return render_template('register.html', form= form)
