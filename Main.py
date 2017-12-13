@@ -18,11 +18,11 @@ app = Flask(__name__)
 
 
 class createdriverrideform(Form):
-    from_where = StringField('Starting Position')
-    to_where = StringField('Destination')
-    date = StringField('Date')
-    time = StringField('Time')
-    userid = StringField('Created by')
+    from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
+    to_where = StringField('Destination', render_kw={"placeholder": "End"})
+    date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
+    time = StringField('Time',render_kw={"placeholder": "Time"})
+    userid = StringField('Created by',render_kw={"placeholder": "Driver/Rider"})
 
 
 @app.route('/', methods =["GET","POST"])
@@ -62,7 +62,7 @@ def new():
 
 
 
-            return redirect(url_for('login'))
+            return redirect(url_for('listofridesP'))
 
 
     return render_template('create_ride_driver.html', form= form)
@@ -70,7 +70,7 @@ def new():
 
 
 @app.route('/listofridesp')
-def tables():
+def listofridesP():
     listofridesp = root.child('listofridesp').get()
     list = []
     # for userid in listofridesp:
