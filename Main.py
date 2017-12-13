@@ -87,7 +87,7 @@ def tables():
 def ridedetails():
     return render_template('ridedetails.html' )
 
-@app.route('/register')
+@app.route('/register', method= ["GET","POST"])
 def register():
     return render_template('register.html' )
 
