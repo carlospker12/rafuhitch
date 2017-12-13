@@ -22,7 +22,7 @@ class createdriverrideform(Form):
     to_where = StringField('Destination')
     date = StringField('Date')
     time = StringField('Time')
-    userid = StringField('driver')
+    userid = StringField('Created by')
 
 
 @app.route('/', methods =["GET","POST"])
