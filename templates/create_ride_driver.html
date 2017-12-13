@@ -1,13 +1,13 @@
 {% include "navbar2.html" %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src = "https://maps.googleapis.com/maps/api/js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRwr7QqmukOvz-3unD8qHUR3KXk1O7-W0&callback=initMap"
+  type="text/javascript"></script>
 {% from "includes/_formhelper.html" import render_field %}
     <script>
          function loadMap() {
 
             var mapOptions = {
-               center:new google.maps.LatLng(1.3783617,103.8506221),
+               center:new google.maps.LatLng(1.3783616,103.8506221),
                zoom:11,
                mapTypeId:google.maps.MapTypeId.ROADMAP
             };
@@ -19,21 +19,21 @@
       </script>
 <div class="container-fluid"></div>
 <form method="POST" action="" style="padding-left: 300px;padding-top: 50px">
-        <div class="form-group col-md-4">
-            {{ render_field(form.from_where, class_="form-control") }}
-        </div>
-
-        <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-pie-chart"></i> Map</div>
-            <div class="card-body">
-                <div align="center" id = "sample" style = "width:480px; height:300px;"></div>
-
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ render_field(form.from_where, class_="form-control") }}
+                </div>
+                <div class=" col-md-8">
+                        <div align="center" id = "sample" style = "width:1000px; height:500px;"></div>
+                    </div>
           </div>
 
-        <div class="form-group">
+        </div>
+            </div>
+    </div>
+        <div style="margin-top: -425px; margin-left: -15px">
+        <div class="form-group" style="">
             <div class="form-group col-md-4">
                 {{ render_field(form.to_where, class_="form-control") }}
             </div>
@@ -55,6 +55,7 @@
                 </div>
             </div>
         </div>
+
 
 </form>
 </div>
