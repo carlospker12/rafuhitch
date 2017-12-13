@@ -22,9 +22,21 @@
                   <th>Name</th>
                   <th>Starting Position</th>
                   <th>Destination</th>
-                  <th>Date/Time</th>
+                  <th>Date</th>
+                  <th>Time</th>
                   <th>Ride Details</th>
                 </tr>
+                {% for ride in listofridesp %}
+                <tr>
+
+                    <td>Driver</td>
+                    <td>{{ ride.get_usertype()  }}</td> #i have no idea why this became the starting place
+                    <td>{{ ride.get_from_where() }}</td> # this became the destination
+                    <td>{{ ride.get_to()}}</td>  #THIS BECAME THE DATE ?!??!?!?!?
+                    <td>{{ ride.get_date() }}</td> # THIS BECAME THE TIME ????
+                    <td>WTF IS RIDE DETAILS</td>
+                </tr>
+                {% endfor %}
               </thead>
               <tbody>
 
