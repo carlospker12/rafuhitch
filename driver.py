@@ -1,3 +1,7 @@
+# from firebase import firebase
+# firebase = firebase.FirebaseApplication('https://rafuhitch.firebaseio.com/')
+# result = firebase.get('/listofridesp', none)
+
 class driver:
     def __init__(self, name, nric, email, contactno, license, carmodel, password):
         self.__name = name
@@ -23,4 +27,17 @@ class driver:
     def set_password(self, password):
         self.__password = password
 
-    def get_password
+    def get_name(self):
+        return self.__name
+    def get_nric(self):
+        return self.__nric
+    def get_email(self):
+        return self.__email
+    def get_contactno(self):
+        return self.__contactno
+    def get_license(self):
+        return self.__license
+    def get_carmodel(self):
+        return self.__carmodel
+    def get_password(self):
+        return self.__password
