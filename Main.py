@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, PasswordField, form
 from createride import Createdriverride as Createdriverride
+from driver  import driver as RegisteredDriver
 import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
@@ -16,6 +17,14 @@ root = db.reference()
 
 app = Flask(__name__)
 
+class registereddriverform(Form):
+    name = StringField('Name')
+    password = StringField('Password')
+    nric = StringField('NRIC')
+    email = StringField('Email')
+    contactno = StringField('Contact Number')
+    license = StringField('Car License Plate Number')
+    carmodel = StringField('Car Brand & Model')
 
 class createdriverrideform(Form):
     from_where = StringField('Starting Position')
@@ -112,9 +121,40 @@ def register():
 def driver_profile():
     return render_template('Driver_Profile.html' )
 
-@app.route('/registerdriver')
-def register_driver():
-    return render_template('register_driver.html' )
+@app.route('/registerdriver',methods=['GET','POST'])
+def new():
+    form = registereddriverform(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        password = form.password.data
+        nric = form.nric.data
+        email = form.email.data
+        contactno = form.contactno.data
+        license = form.license.data
+        carmodel = form.carmodel.data
+
+
+        rd = RegisteredDriver(name, password, nric, email, contactno, license, carmodel)
+
+        cdr_db = root.child('Driver_Profile.html')
+        cdr_db.push({
+                'Name': rd.get_name(),
+                'Password': rd.get_password(),
+                'NRIC': rd.get_nric(),
+                'Email': rd.get_email(),
+                'Contactno':rd.get_contactno(),
+                'License': rd.get_license(),
+                'Car Model':rd.get_carmodel()
+        })
+
+        flash('Magazine Inserted Sucessfully.', 'success')
+
+
+
+        return redirect(url_for('login'))
+
+
+    return render_template('register_driver.html', form= form)
 
 if __name__ == "__main__":
     app.secret_key = 'secret123'
