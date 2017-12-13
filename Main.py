@@ -3,6 +3,7 @@ from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, v
 from createride import Createdriverride as Createdriverride
 import firebase_admin
 from firebase_admin import credentials, db
+from signup import User
 
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -88,9 +89,25 @@ def tables():
 def ridedetails():
     return render_template('ridedetails.html' )
 
-@app.route('/register')
+@app.route('/register', methods=["GET","POST"])
 def register():
-    return render_template('register.html' )
+    if request.method=="POST":
+        name=request.form["name"]
+        email=request.form["email"]
+        password=request.form["password"]
+
+        userinfo=User(name,email,password)
+
+        userinfo_db=root.child("userstuff")
+        userinfo_db.push({
+            "Name":userinfo.get_name(),
+            "Email":userinfo.get_email(),
+            "Password":userinfo.get_password()
+        })
+        flash("Successfully Register",'success')
+        return redirect(url_for("listofridesP"))
+
+    return render_template('register.html', form= form)
 
 @app.route('/driverprofile')
 def driver_profile():
