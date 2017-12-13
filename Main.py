@@ -34,7 +34,7 @@ def login():
                 return render_template("listofridesP.html")
     return render_template('login.html')
 
-@app.route('/',methods=["GET","POST"])
+@app.route('/createridedriver',methods=["GET","POST"])
 def new():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
@@ -67,7 +67,7 @@ def new():
 
 
 
-@app.route('/')
+@app.route('/listofridesp')
 def tables():
     listofridesp = root.child('listofridesp').get()
     list = []
@@ -83,19 +83,19 @@ def tables():
             list.append(createride)
     return render_template('listofridesP.html' )
 
-@app.route('/')
+@app.route('/ridedetails')
 def ridedetails():
     return render_template('ridedetails.html' )
 
-@app.route('/')
+@app.route('/register', method= ["GET","POST"])
 def register():
     return render_template('register.html' )
 
-@app.route('/')
+@app.route('/driverprofile')
 def driver_profile():
     return render_template('Driver_Profile.html' )
 
-@app.route('/')
+@app.route('/registerdriver')
 def register_driver():
     return render_template('register_driver.html' )
 
