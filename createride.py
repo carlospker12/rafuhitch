@@ -1,10 +1,18 @@
 class Createdriverride:
-    def __init__(self, userid,from_where,to,date,time):
+    def __init__(self, usertype, from_where, to, date, time):
+        self.__pubid = ''
         self.__from_where = from_where
         self.__to = to
-        self.__userid = userid
+        self.__usertype = usertype
         self.__date = date
         self.__time = time
+
+
+    def get_pubid(self):
+        return self.__pubid
+
+    def set_pubid(self, pubid):
+        self.__pubid = pubid
 
     def get_from_where(self):
         return self.__from_where
@@ -12,11 +20,11 @@ class Createdriverride:
     def set_from_where(self, from_where):
         self.__from_where = from_where
 
-    def get_userid(self):
-        return self.__userid
+    def get_usertype(self):
+        return self.__usertype
 
-    def set_userid(self, userid):
-        self.__userid = userid
+    def set_usertype(self, usertype):
+        self.__usertype = usertype
 
     def get_to(self):
         return self.__to

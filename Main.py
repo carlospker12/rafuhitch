@@ -27,11 +27,11 @@ class registereddriverform(Form):
     carmodel = StringField('Car Brand & Model')
 
 class createdriverrideform(Form):
-    from_where = StringField('Starting Position')
-    to_where = StringField('Destination')
-    date = StringField('Date')
-    time = StringField('Time')
-    userid = StringField('driver')
+    from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
+    to_where = StringField('Destination', render_kw={"placeholder": "End"})
+    date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
+    time = StringField('Time',render_kw={"placeholder": "Time"})
+    userid = StringField('Created by',render_kw={"placeholder": "Driver/Rider"})
 
 
 @app.route('/', methods =["GET","POST"])
@@ -63,7 +63,7 @@ def new():
                     'Destination': cdr.get_to(),
                     'date': cdr.get_date(),
                     'time': cdr.get_time(),
-                    'usertype':cdr.get_userid()
+                    'usertype':cdr.get_usertype()
 
             })
 
@@ -71,7 +71,7 @@ def new():
 
 
 
-            return redirect(url_for('login'))
+            return redirect(url_for('listofridesP'))
 
 
     return render_template('create_ride_driver.html', form= form)
@@ -79,20 +79,50 @@ def new():
 
 
 @app.route('/listofridesp')
-def tables():
+def listofridesP():
     listofridesp = root.child('listofridesp').get()
     list = []
-    for userid in listofridesp:
+    # for userid in listofridesp:
+    #
+    #     eachupdate = listofridesp[id]
+    #
+    #     if eachupdate['userid'] == 'driver':
+    #         createride = Createdriverride( eachupdate['from'], eachupdate['to'],
+    #                             eachupdate['date'], eachupdate['time'],eachupdate['userid'])
+    #         createride.set_userid(userid)
+    #         print(createride.get_userid())
+    #         list.append(createride)
+    # return render_template('listofridesP.html' )
+    for pubid in listofridesp:
 
-        eachupdate = listofridesp[id]
+        eachupdate = listofridesp[pubid]
 
-        if eachupdate['userid'] == 'driver':
-            createride = Createdriverride( eachupdate['from'], eachupdate['to'],
-                                eachupdate['date'], eachupdate['time'],eachupdate['userid'])
-            createride.set_userid(userid)
-            print(createride.get_userid())
-            list.append(createride)
-    return render_template('listofridesP.html' )
+        if eachupdate['usertype'] == 'driver':
+            ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],
+                     eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+
+            ride.set_pubid(pubid)
+            print(ride.get_pubid())
+            list.append(ride)
+
+    return render_template('listofridesP.html',  listofridesp = list )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/ridedetails')
 def ridedetails():

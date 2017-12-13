@@ -19,12 +19,24 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Created by</th>
                   <th>Starting Position</th>
                   <th>Destination</th>
-                  <th>Date/Time</th>
+                  <th>Date</th>
+                  <th>Time</th>
                   <th>Ride Details</th>
                 </tr>
+                {% for ride in listofridesp %}
+                <tr>
+
+                    <td>Driver</td>
+                    <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                    <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                    <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                    <td>{{ ride.get_date() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                    <td><a href="/ridedetails">ride details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                </tr>
+                {% endfor %}
               </thead>
               <tbody>
 
@@ -32,7 +44,7 @@
             </table>
           </div>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="card-footer small text-muted">Note:Those created by 'driver' should only be picked by riders<br>Note:Those created by 'riders' should only be picked by drivers </div>
       </div>
     </div>
     <!-- /.container-fluid-->
