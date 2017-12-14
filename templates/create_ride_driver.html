@@ -1,8 +1,10 @@
-{% include "navbar2.html" %}
+{% extends "layout.html" %}
+{% block body %}
     <script src = "https://maps.googleapis.com/maps/api/js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRwr7QqmukOvz-3unD8qHUR3KXk1O7-W0&callback=initMap"
   type="text/javascript"></script>
 {% from "includes/_formhelper.html" import render_field %}
+
     <script>
          function loadMap() {
 
@@ -61,6 +63,7 @@
             </div>
 
         </div>
+{% endblock %}
 
 
 </form>

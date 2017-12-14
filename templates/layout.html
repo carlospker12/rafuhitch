@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+
+{%  block additionalscripts %}{% endblock %}
+
+<div class="container-fluid">
+    {% include 'navbar2.html' %}
+    {% block body %}{% endblock %}
+</div>
+
+
+{% include 'includes/_footer.html' %}
+</body>
+</html>
