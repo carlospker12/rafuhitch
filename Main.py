@@ -109,22 +109,26 @@ def listofridesP():
 
 
 @app.route('/ridedetails')
-def ridedetails():
+@app.route('/ridedetails/<string:id>/', methods=['GET', 'POST'])
+def ridedetails(id):
 
     listofridesp = root.child('listofridesp').get()
-    list = []
-    for pubid in listofridesp:
 
-        eachupdate = listofridesp[pubid]
+    url = 'listofridesp/' + id
+    eachpub = root.child(url).get()
 
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],
-                eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+    # for pubid in listofridesp:
+    #
+    #     eachupdate = listofridesp[pubid]
 
-        ride.set_pubid(pubid)
-        print(ride.get_pubid())
-        list.append(ride)
+    ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
+                             eachpub['date'], eachpub['time'],eachpub['usertype'])
 
-    return render_template('ridedetails.html', listofridesp=list, count = 0 )
+    # ride.set_pubid(id)
+    # print(ride.get_pubid())
+    # list.append(ride)
+
+    return render_template('ridedetails.html', ride=ride )
 
 @app.route('/register', methods=["GET","POST"])
 def register():
