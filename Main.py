@@ -31,7 +31,7 @@ class createdriverrideform(Form):
     to_where = StringField('Destination', render_kw={"placeholder": "End"})
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
-    userid = StringField('Created by',render_kw={"placeholder": "Driver/Rider"})
+    userid = StringField('Verification',render_kw={"placeholder": "Type:'driver' if you are not a bot"})
 
 
 @app.route('/', methods =["GET","POST"])
@@ -48,7 +48,7 @@ def login():
 def createridedriver():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data == 'driver':
+        if  form.userid.data.lower() == 'driver':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
