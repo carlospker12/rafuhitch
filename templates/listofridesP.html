@@ -27,17 +27,17 @@
                   <th>Time</th>
                   <th>Ride Details</th>
                 </tr>
-                {% for ride in listofridesp %}
-
-                {% endfor %}
               </thead>
               <tbody>
                 <td>Driver</td>
+
+                {% for ride in listofridesp %}
                 <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_date() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                <td><a href="/ridedetails">ride details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                <td><a href="/ridedetails">Ride Details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                {%  endfor %}
               </tbody>
               </div>
             </table>
