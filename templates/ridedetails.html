@@ -23,18 +23,17 @@
                     <img height=350px style="margin-left:50px" class="img-responsive" src="http://blacksportsonline.com/home/wp-content/uploads/2013/05/Chris-Bosh-Mouth.jpg">
                 </div>
 
-                <div class = 'col-sm-8'>
+                <div class = 'col-sm-6'>
                     <div class='jumbotron'>
-                        <h2>Dave Vid</h2>
-                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East area. I think of <br>myself as friendly and i want to earn money ass well.</p>
-                    </div>
-                    {%  for ride in listofridesp %}
+                        <h3>Name: Dave Vid</h3>
+                        {%  for ride in listofridesp %}
                         <p>Starting Position: {{ ride.get_usertype() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Destination: {{ ride.get_from_where() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Date: {{ ride.get_to()}}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Time: {{ ride.get_date() }}</p> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                        <p></p>
                     {% endfor %}
+                         </div>
+
                 </div>
             </div>
         </div>
