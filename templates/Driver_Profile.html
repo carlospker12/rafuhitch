@@ -2,35 +2,46 @@
 <html lang="en" xmlns:align="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-   {% extends "layout.html"%}
-    {%  block body %}
-    <meta charset="UTF-8">
-    <title>Driver Profile</title>
-</head>
-    <body>
+    {% extends "layout.html" %}
+    {% block body %}
+        <meta charset="UTF-8">
+        <title>Driver Profile</title>
+        <style>
+            td, th {
+                border: solid 1px #000;
+                padding: 5px;
+            }
+        </style>
+        </head>
+        <body>
         -->
-        <div style="margin-left:190px;margin-top:20px" class = 'container-fluid'>
+        <div style="margin-left:190px;margin-top:20px" class='container-fluid'>
             <div class="row">
                 <div class="col-sm-4">
-                    <img height=200px style="margin-left:50px" class="img-responsive" src="http://a1.espncdn.com/combiner/i?img=%2Fphoto%2F2017%2F0515%2Fr209877_1296x729_16%2D9.jpg">
+                    <img height=200px style="margin-left:50px" class="img-responsive"
+                         src="http://a1.espncdn.com/combiner/i?img=%2Fphoto%2F2017%2F0515%2Fr209877_1296x729_16%2D9.jpg">
+                    <div style="margin-left: 50px;">
+                        <br/>
+                        {% for driver in driverprofile %}
+                            <p>Name: {{ driver.get_name() }}</p>
+                            <p>NRIC: {{ driver.get_nric() }}</p>
+                            <p>Email: {{ driver.get_email() }}</p>
+                            <p>Contact Number: {{ driver.get_contactno() }}</p>
+                            <p>License Plate Number: {{ driver.get_license() }}</p>
+                            <p>Car Model & Brand: {{ driver.get_carmodel() }}</p>
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <div class = 'col-sm-6'>
+                <div class='col-sm-6'>
                     <div class='jumbotron'>
                         <h2>Dave Vid</h2>
-                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East area. I think of <br>myself as friendly and i want to earn money ass well.</p>
+                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East
+                            area. I think of <br>myself as friendly and i want to earn money to eat ass.</p>
 
                     </div>
-                    {%  for ride in listofridesp %}
-                        <p>Starting Position: {{ ride.get_usertype() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                        <p>Destination: {{ ride.get_from_where() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                        <p>Date: {{ ride.get_to()}}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                        <p>Time: {{ ride.get_date() }}</p> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                        <p></p>
-                    {% endfor %}
                 </div>
             </div>
         </div>
+        </body>
     {% endblock %}
-    </body>
-</html>
