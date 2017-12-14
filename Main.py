@@ -31,7 +31,7 @@ class createdriverrideform(Form):
     to_where = StringField('Destination', render_kw={"placeholder": "End"})
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
-    userid = StringField('Verification',render_kw={"placeholder": "Type:'driver' if you are not a bot"})
+    userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "})
 
 
 @app.route('/', methods =["GET","POST"])
@@ -150,22 +150,22 @@ def driver_profile():
     return render_template('Driver_Profile.html' )
 
 @app.route('/registerdriver',methods=['GET','POST'])
-def new():
+def registerdriver():
     form = registereddriverform(request.form)
-    if request.method == 'POST' and form.validate():
-        name = form.name.data
-        password = form.password.data
-        nric = form.nric.data
-        email = form.email.data
-        contactno = form.contactno.data
-        license = form.license.data
-        carmodel = form.carmodel.data
+    if request.method == 'POST' :
+        name = request.form["name"]
+        password = request.form["password"]
+        nric = request.form["nric"]
+        email = request.form["email"]
+        contactno = request.form["contactno"]
+        license = request.form["license"]
+        carmodel = request.form["carmodel"]
 
 
         rd = RegisteredDriver(name, password, nric, email, contactno, license, carmodel)
 
-        cdr_db = root.child('Driver_Profile.html')
-        cdr_db.push({
+        rd_db = root.child('Driverprofile')
+        rd_db.push({
                 'Name': rd.get_name(),
                 'Password': rd.get_password(),
                 'NRIC': rd.get_nric(),
@@ -174,10 +174,6 @@ def new():
                 'License': rd.get_license(),
                 'Car Model':rd.get_carmodel()
         })
-
-        flash('Magazine Inserted Sucessfully.', 'success')
-
-
 
         return redirect(url_for('login'))
 
