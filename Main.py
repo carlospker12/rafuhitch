@@ -67,7 +67,7 @@ def createridedriver():
 
             })
 
-            flash('Magazine Inserted Sucessfully.', 'success')
+
 
 
 
