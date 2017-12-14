@@ -21,7 +21,6 @@
               <div>
                 <thead>
                 <tr>
-                  <th>Created by</th>
                   <th>Starting Position</th>
                   <th>Destination</th>
                   <th>Date</th>
@@ -30,15 +29,15 @@
                 </tr>
               </thead>
               <tbody>
-                <td>Driver</td>
-
                 {% for ride in listofridesp %}
+                <tr>
                 <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td>{{ ride.get_date() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 <td><a href="/ridedetails">Ride Details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                 {%  endfor %}
+                </tr>
               </tbody>
               </div>
             </table>
