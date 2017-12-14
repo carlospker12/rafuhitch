@@ -108,25 +108,23 @@ def listofridesP():
     return render_template('listofridesP.html',  listofridesp = list )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/ridedetails')
 def ridedetails():
-    return render_template('ridedetails.html' )
+
+    listofridesp = root.child('listofridesp').get()
+    list = []
+    for pubid in listofridesp:
+
+        eachupdate = listofridesp[pubid]
+
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],
+                eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+
+        ride.set_pubid(pubid)
+        print(ride.get_pubid())
+        list.append(ride)
+
+    return render_template('ridedetails.html', listofridesp=list, count = 0 )
 
 @app.route('/register', methods=["GET","POST"])
 def register():
