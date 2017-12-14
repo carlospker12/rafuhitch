@@ -41,11 +41,11 @@ def login():
         password = request.form["password"]
         if email == "google@google.com":
             if password == "password":
-                return render_template("listofridesP.html")
+                return redirect(url_for('createridedriver'))
     return render_template('login.html')
 
 @app.route('/createridedriver',methods=["GET","POST"])
-def new():
+def createridedriver():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
         if  form.userid.data == 'driver':
