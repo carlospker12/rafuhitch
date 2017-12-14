@@ -154,13 +154,11 @@ def driverprofile():
     driver = root.child('Driverprofile').get()
     list = []
     for pubid in driver:
-        print('1', driver)
         print('2', driver[pubid])
         eachdriver = driver[pubid]
         driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'])
         driver.set_pubid(pubid)
         list.append(driver)
-        print('3')
 
     return render_template('Driver_Profile.html', driverprofile = list)
 
