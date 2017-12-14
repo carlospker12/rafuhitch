@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, PasswordField, form
 from createride import Createdriverride as Createdriverride
-from driver  import driver as RegisteredDriver
+from driver  import Driver
 import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
@@ -150,8 +150,20 @@ def register():
     return render_template('register.html', form= form)
 
 @app.route('/driverprofile')
-def driver_profile():
-    return render_template('Driver_Profile.html' )
+def driverprofile():
+    driver = root.child('Driverprofile').get()
+    list = []
+    for pubid in driver:
+        print('1', driver)
+        print('2', driver[pubid])
+        eachdriver = driver[pubid]
+        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'])
+        driver.set_pubid(pubid)
+        list.append(driver)
+        print('3')
+
+    return render_template('Driver_Profile.html', driverprofile = list)
+
 
 @app.route('/registerdriver',methods=['GET','POST'])
 def registerdriver():

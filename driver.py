@@ -1,5 +1,6 @@
-class driver:
+class Driver:
     def __init__(self, name, password, nric, email, contactno, license, carmodel):
+        self.__pubid = ''
         self.__name = name
         self.__password = password
         self.__nric = nric
@@ -37,3 +38,8 @@ class driver:
         return self.__license
     def get_carmodel(self):
         return self.__carmodel
+
+    def get_pubid(self):
+        return self.__pubid
+    def set_pubid(self, pubid):
+        self.__pubid = pubid
