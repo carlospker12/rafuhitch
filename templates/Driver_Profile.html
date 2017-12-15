@@ -18,10 +18,18 @@
         <div style="margin-left:190px;margin-top:20px" class='container-fluid'>
             <div class="row">
                 <div class="col-sm-4">
-                    <img height=200px style="margin-left:50px" class="img-responsive"
+                    <img height=250px style="margin-left:50px" class="img-responsive"
                          src="http://a1.espncdn.com/combiner/i?img=%2Fphoto%2F2017%2F0515%2Fr209877_1296x729_16%2D9.jpg">
-                    <div style="margin-left: 50px;">
-                        <br/>
+
+                </div>
+
+                <div class='col-sm-6'>
+                    <div class='jumbotron'>
+                    <h2>Mervin's Profile</h2>
+                    <br>
+                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East
+                            area. I think of myself as friendly and i want to earn money to eat.</p>
+
                         {% for driver in driverprofile %}
                             <p>Name: {{ driver.get_name() }}</p>
                             <p>Email: {{ driver.get_email() }}</p>
@@ -29,14 +37,6 @@
                             <p>License Plate Number: {{ driver.get_license() }}</p>
                             <p>Car Model & Brand: {{ driver.get_carmodel() }}</p>
                         {% endfor %}
-                    </div>
-                </div>
-
-                <div class='col-sm-6'>
-                    <div class='jumbotron'>
-                        <h2>Dave Vid</h2>
-                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East
-                            area. I think of myself as friendly and i want to earn money to eat.</p>
 
                     </div>
                 </div>
