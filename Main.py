@@ -31,8 +31,7 @@ class createdriverrideform(Form):
     to_where = StringField('Destination', render_kw={"placeholder": "End"})
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
-    userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "})
-
+    userid = StringField('Verification',[validators.Length(min=6, max=6)],render_kw={"placeholder": "Enter 'driver' "} )
 
 @app.route('/', methods =["GET","POST"])
 def login():
