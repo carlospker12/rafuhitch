@@ -63,35 +63,14 @@ def createridedriver():
                     'date': cdr.get_date(),
                     'time': cdr.get_time(),
                     'usertype':cdr.get_usertype()
-
             })
-
-
-
-
-
             return redirect(url_for('listofridesP'))
-
-
     return render_template('create_ride_driver.html', form= form)
-
-
 
 @app.route('/listofridesp')
 def listofridesP():
     listofridesp = root.child('listofridesp').get()
     list = []
-    # for userid in listofridesp:
-    #
-    #     eachupdate = listofridesp[id]
-    #
-    #     if eachupdate['userid'] == 'driver':
-    #         createride = Createdriverride( eachupdate['from'], eachupdate['to'],
-    #                             eachupdate['date'], eachupdate['time'],eachupdate['userid'])
-    #         createride.set_userid(userid)
-    #         print(createride.get_userid())
-    #         list.append(createride)
-    # return render_template('listofridesP.html' )
     for pubid in listofridesp:
 
         eachupdate = listofridesp[pubid]
@@ -116,16 +95,10 @@ def ridedetails(id):
     url = 'listofridesp/' + id
     eachpub = root.child(url).get()
 
-    # for pubid in listofridesp:
-    #
-    #     eachupdate = listofridesp[pubid]
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
                              eachpub['date'], eachpub['time'],eachpub['usertype'])
 
-    # ride.set_pubid(id)
-    # print(ride.get_pubid())
-    # list.append(ride)
 
     return render_template('ridedetails.html', ride=ride )
 
