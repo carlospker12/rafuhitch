@@ -39,7 +39,7 @@ def login():
     if  request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        if email == "admin@gmail.com":
+        if email == "driver@gmail.com":
             if password == "password":
                 return redirect(url_for('createridedriver'))
     return render_template('login.html')

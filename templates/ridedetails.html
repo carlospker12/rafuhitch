@@ -25,13 +25,14 @@
 
                 <div class = 'col-sm-6'>
                     <div class='jumbotron'>
-                        <h3>Name: Dave Vid</h3>
+                        <h5>Name: Dave Vid</h5>
 {#                        {%  for ride in listofridesp %}#}
                         <p>Starting Position: {{ ride.get_usertype() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Destination: {{ ride.get_from_where() }}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Date: {{ ride.get_to()}}</p>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
                         <p>Time: {{ ride.get_date() }}</p> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
 {#                    {% endfor %}#}
+                        <a href="{{url_for('driverprofile')}}">Interested? Click here</a>
                          </div>
 
                 </div>
