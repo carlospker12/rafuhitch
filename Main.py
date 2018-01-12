@@ -63,6 +63,7 @@ def createridedriver():
                     'date': cdr.get_date(),
                     'time': cdr.get_time(),
                     'usertype':cdr.get_usertype()
+
             })
             return redirect(url_for('listofridesP'))
     return render_template('create_ride_driver.html', form= form)
@@ -76,8 +77,8 @@ def listofridesP():
         eachupdate = listofridesp[pubid]
 
         if eachupdate['usertype'] == 'driver':
-            ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],
-                     eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+            if eachupdate["status"] == "Active":
+                ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
 
             ride.set_pubid(pubid)
             print(ride.get_pubid())
