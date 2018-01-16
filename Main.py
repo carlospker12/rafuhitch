@@ -8,7 +8,7 @@ from signup import User
 
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://rafuhitch.firebaseio.com/ '
+    'databaseURL': 'https://rafuhitch.firebaseio.com/'
 })
 
 root = db.reference()
@@ -19,6 +19,7 @@ app = Flask(__name__)
 
 class registereddriverform(Form):
     name = StringField('Name')
+    username = StringField('username')
     password = StringField('Password')
     nric = StringField('NRIC')
     email = StringField('Email')
@@ -33,15 +34,6 @@ class createdriverrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',[validators.Length(min=6, max=6)],render_kw={"placeholder": "Enter 'driver' "} )
 
-@app.route('/', methods =["GET","POST"])
-def login():
-    if  request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-        if email == "driver@gmail.com":
-            if password == "password":
-                return redirect(url_for('createridedriver'))
-    return render_template('login.html')
 
 @app.route('/createridedriver',methods=["GET","POST"])
 def createridedriver():
@@ -105,22 +97,60 @@ def ridedetails(id):
 
 @app.route('/register', methods=["GET","POST"])
 def register():
-    if request.method == "POST":
-        name=request.form["name"]
-        email=request.form["email"]
-        password=request.form["password"]
+    form = registereddriverform(request.form)
+    if request.method == "POST" and form.validate():
+        username = form.username.data
+        name=form.name.data
+        email=form.email.data
+        password=form.password.data
 
-        userinfo=User(name,email,password)
+        userinfo=User(name,email,password,username)
 
         userinfo_db=root.child("userstuff")
         userinfo_db.push({
+            "Username":userinfo.get_username(),
             "Name":userinfo.get_name(),
             "Email":userinfo.get_email(),
             "Password":userinfo.get_password()
         })
-        return redirect(url_for("listofridesP"))
+        return redirect(url_for("login"))
 
     return render_template('register.html', form= form)
+
+class Log_InForm(Form):
+    username = StringField('Username: ',[validators.Length(min=1,max=100),validators.DataRequired()])
+    password = PasswordField('Password: ',[validators.DataRequired()])
+
+@app.route('/', methods =["GET","POST"])
+def login():
+    form = Log_InForm(request.form)
+    if  request.method == "POST" and form.validate():
+        username = form.username.data
+        password = form.password.data
+
+        ifUserExists = root.child('userstuff').order_by_child('Username').equal_to(username).get()
+        if len(ifUserExists) <= 0:
+
+            error = 'Invalid login'
+            flash(error, 'danger')
+            return render_template('register.html', form=form)
+        else:
+            for k, v in ifUserExists.items():
+                print(k, v)
+                # print(sha256_crypt.encrypt(password))
+                print(v['Username'])
+                print(v['Password'])
+
+                if username == v['Username'] and password == v['Password']:
+                    session['logged_in'] = True
+                    session['Username'] = username
+                    return redirect(url_for('createridedriver'))
+                else:
+                    error = 'Invalid login'
+                    flash(error, 'danger')
+                    return render_template('register.html', form=form)
+
+    return render_template('login.html')
 
 @app.route('/driverprofile')
 def driverprofile():
@@ -140,6 +170,7 @@ def driverprofile():
 def registerdriver():
     form = registereddriverform(request.form)
     if request.method == 'POST' :
+        username = request.form["username"]
         name = request.form["name"]
         password = request.form["password"]
         nric = request.form["nric"]
@@ -149,10 +180,11 @@ def registerdriver():
         carmodel = request.form["carmodel"]
 
 
-        rd = RegisteredDriver(name, password, nric, email, contactno, license, carmodel)
+        rd = registereddriverform(username,name, password, nric, email, contactno, license, carmodel)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
+                'username': rd.get_username(),
                 'Name': rd.get_name(),
                 'Password': rd.get_password(),
                 'NRIC': rd.get_nric(),
