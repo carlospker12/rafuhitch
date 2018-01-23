@@ -34,6 +34,13 @@ class createdriverrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',[validators.Length(min=6, max=6)],render_kw={"placeholder": "Enter 'driver' "} )
 
+class createpassengerrideform(Form):
+    from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
+    to_where = StringField('Destination', render_kw={"placeholder": "End"})
+    date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
+    time = StringField('Time',render_kw={"placeholder": "Time"})
+    userid = StringField('Verification',[validators.Length(min=9, max=9)],render_kw={"placeholder": "Enter 'passenger' "} )
+
 
 @app.route('/createridedriver',methods=["GET","POST"])
 def createridedriver():
@@ -202,9 +209,9 @@ def registerdriver():
 
 @app.route('/createridepassenger',methods=["GET","POST"])
 def createridepassenger():
-    form = createdriverrideform(request.form)
+    form = createpassengerrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data.lower() == 'driver':
+        if  form.userid.data.lower() == 'Passenger':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
@@ -213,7 +220,7 @@ def createridepassenger():
 
             cdr = Createdriverride(userid,from_where,to_where,date,time)
 
-            cdr_db = root.child('listofridesp')
+            cdr_db = root.child('listofridepassenger')
             cdr_db.push({
                     'Starting position': cdr.get_from_where(),
                     'Destination': cdr.get_to(),
