@@ -199,15 +199,31 @@ def registerdriver():
 
     return render_template('register_driver.html', form= form)
 
-@app.route('/update/<string:id>/', methods=['GET', 'POST'])
-def update_ride(id):
-    form = updateform(request.form)
+
+@app.route('/createridepassenger',methods=["GET","POST"])
+def createridepassenger():
+    form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-        from_where= request.form[""]
-        to_where=request.form[""]
-        date= request.form[""]
-        time= request.form[""]
-        ride = createridedriver(from_where,to_where,date,time)
+        if  form.userid.data.lower() == 'driver':
+            from_where= form.from_where.data
+            to_where = form.to_where.data
+            date = form.date.data
+            time = form.time.data
+            userid = form.userid.data
+
+            cdr = Createdriverride(userid,from_where,to_where,date,time)
+
+            cdr_db = root.child('listofridesp')
+            cdr_db.push({
+                    'Starting position': cdr.get_from_where(),
+                    'Destination': cdr.get_to(),
+                    'date': cdr.get_date(),
+                    'time': cdr.get_time(),
+                    'usertype':cdr.get_usertype()
+
+            })
+            return redirect(url_for('listofridesP'))
+    return render_template('create_ride_passenger.html', form= form)
 
 
 
