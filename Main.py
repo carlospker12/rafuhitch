@@ -199,6 +199,18 @@ def registerdriver():
 
     return render_template('register_driver.html', form= form)
 
+@app.route('/update/<string:id>/', methods=['GET', 'POST'])
+def update_ride(id):
+    form = updateform(request.form)
+    if request.method == 'POST' and form.validate():
+        from_where= request.form[""]
+        to_where=request.form[""]
+        date= request.form[""]
+        time= request.form[""]
+        ride = createridedriver(from_where,to_where,date,time)
+
+
+
 if __name__ == "__main__":
     app.secret_key = 'secret123'
     app.run(debug=True)
