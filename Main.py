@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, PasswordField, form
 from createride import Createdriverride as Createdriverride
+from createrideP import createridep
 from driver  import Driver
 import firebase_admin
 from firebase_admin import credentials, db
@@ -76,8 +77,7 @@ def listofridesP():
         eachupdate = listofridesp[pubid]
 
         if eachupdate['usertype'] == 'driver':
-            if eachupdate["status"] == "Active":
-                ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+            ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
 
             ride.set_pubid(pubid)
             print(ride.get_pubid())
@@ -211,22 +211,22 @@ def registerdriver():
 def createridepassenger():
     form = createpassengerrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data.lower() == 'Passenger':
+        if  form.userid.data.lower() == 'passenger':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
             time = form.time.data
             userid = form.userid.data
 
-            cdr = Createdriverride(userid,from_where,to_where,date,time)
+            crd = createridep(userid,from_where,to_where,date,time)
 
-            cdr_db = root.child('listofridepassenger')
-            cdr_db.push({
-                    'Starting position': cdr.get_from_where(),
-                    'Destination': cdr.get_to(),
-                    'date': cdr.get_date(),
-                    'time': cdr.get_time(),
-                    'usertype':cdr.get_usertype()
+            crd_db = root.child('listofridepassenger')
+            crd_db.push({
+                    'Starting position': crd.get_from_where(),
+                    'Destination': crd.get_to(),
+                    'date': crd.get_date(),
+                    'time': crd.get_time(),
+                    'usertype':crd.get_usertype()
 
             })
             return redirect(url_for('listofridesP'))
