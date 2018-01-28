@@ -135,10 +135,20 @@ def login():
 
         ifUserExists = root.child('userstuff').order_by_child('Username').equal_to(username).get()
         if len(ifUserExists) <= 0:
+            ifUserExists = root.child("Driverprofile").order_by_child('Username').equal_to(username).get()
+            if len(ifUserExists)<=0:
+                return redirect(url_for('/'))
+            else:
+                for k, v in ifUserExists.items():
+                    print(k, v)
+                    # print(sha256_crypt.encrypt(password))
+                    print(v['Username'])
+                    print(v['Password'])
 
-            error = 'Invalid login'
-            flash(error, 'danger')
-            return render_template('register.html', form=form)
+                    if username == v['Username'] and password == v['Password']:
+                        session['logged_in'] = True
+                        session['Username'] = username
+                        return redirect(url_for('createridepassenger'))
         else:
             for k, v in ifUserExists.items():
                 print(k, v)
@@ -149,10 +159,8 @@ def login():
                 if username == v['Username'] and password == v['Password']:
                     session['logged_in'] = True
                     session['Username'] = username
-                    return redirect(url_for('createridedriver'))
+                    return redirect(url_for('createridepassenger'))
                 else:
-                    error = 'Invalid login'
-                    flash(error, 'danger')
                     return render_template('register.html', form=form)
 
     return render_template('login.html')
