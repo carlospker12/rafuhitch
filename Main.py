@@ -41,7 +41,9 @@ class createpassengerrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',[validators.Length(min=9, max=9)],render_kw={"placeholder": "Enter 'passenger' "} )
 
-
+@app.route("/homepage/")
+def homepage():
+    return render_template("homepage.html")
 @app.route('/createridedriver',methods=["GET","POST"])
 def createridedriver():
     form = createdriverrideform(request.form)

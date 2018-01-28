@@ -1,5 +1,8 @@
-@mixin rotate {
-  -webkit-transform: rotate(15deg);
-  -ms-transform: rotate(15deg);
-  transform: rotate(15deg);
+@mixin heading-font {
+  font-family: 'Catamaran';
+  font-weight: 800 !important;
+}
+
+@mixin body-font {
+  font-family: 'Lato';
 }

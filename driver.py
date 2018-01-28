@@ -13,17 +13,16 @@ class Driver:
         self.__name = name
     def set_password(self, password):
         self.__password = password
-    def set_nric(self, nric):
+    def set_nric(self,nric):
         self.__nric = nric
-    def set_email(self, email):
+    def set_email(self,email):
         self.__email = email
-    def set_contactno(self, contactno):
+    def set_contactno(self,contactno):
         self.__contactno = contactno
-    def set_license(self, license):
+    def set_license(self,license):
         self.__license = license
-    def set_carmodel(self, carmodel):
+    def set_carmodel(self,carmodel):
         self.__carmodel = carmodel
-
 
     def get_name(self):
         return self.__name
@@ -40,9 +39,7 @@ class Driver:
     def get_carmodel(self):
         return self.__carmodel
 
-
     def get_pubid(self):
         return self.__pubid
     def set_pubid(self, pubid):
         self.__pubid = pubid
-

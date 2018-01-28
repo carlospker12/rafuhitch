@@ -1,55 +1,28 @@
-// Global styling for this template
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  overflow-x: hidden;
+  @include body-font;
 }
 
-body.sticky-footer {
-  margin-bottom: 56px;
-  .content-wrapper {
-    min-height: calc(100vh - 56px - 56px);
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include heading-font;
 }
 
-body.fixed-nav {
-  padding-top: 56px;
+.btn-xl {
+  text-transform: uppercase;
+  padding: 1.5rem 3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
 }
 
-.content-wrapper {
-  min-height: calc(100vh - 56px);
-  padding-top: 1rem;
+.bg-black {
+  background-color: $black !important;
 }
 
-// Scroll to top button
-.scroll-to-top {
-  position: fixed;
-  right: 15px;
-  bottom: 3px;
-
-  display: none;
-
-  width: 50px;
-  height: 50px;
-
-  text-align: center;
-
-  color: white;
-  background: fade-out($gray-800, .5);
-
-  line-height: 45px;
-  &:focus,
-  &:hover {
-    color: white;
-  }
-  &:hover {
-    background: $gray-800;
-  }
-  i {
-    font-weight: 800;
-  }
+.rounded-pill {
+  border-radius: 5rem;
 }
