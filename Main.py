@@ -20,7 +20,6 @@ app = Flask(__name__)
 
 class registereddriverform(Form):
     name = StringField('Name')
-    username = StringField('username')
     password = StringField('Password')
     nric = StringField('NRIC')
     email = StringField('Email')
@@ -104,16 +103,14 @@ def ridedetails(id):
 def register():
     form = registereddriverform(request.form)
     if request.method == "POST" and form.validate():
-        username = form.username.data
         name=form.name.data
         email=form.email.data
         password=form.password.data
 
-        userinfo=User(name,email,password,username)
+        userinfo=User(name,email,password)
 
         userinfo_db=root.child("userstuff")
         userinfo_db.push({
-            "Username":userinfo.get_username(),
             "Name":userinfo.get_name(),
             "Email":userinfo.get_email(),
             "Password":userinfo.get_password()
@@ -123,42 +120,42 @@ def register():
     return render_template('register.html', form= form)
 
 class Log_InForm(Form):
-    username = StringField('Username: ',[validators.Length(min=1,max=100),validators.DataRequired()])
+    email = StringField('Email: ',[validators.Length(min=1,max=100),validators.DataRequired()])
     password = PasswordField('Password: ',[validators.DataRequired()])
 
 @app.route('/', methods =["GET","POST"])
 def login():
     form = Log_InForm(request.form)
     if  request.method == "POST" and form.validate():
-        username = form.username.data
+        email = form.email.data
         password = form.password.data
 
-        ifUserExists = root.child('userstuff').order_by_child('Username').equal_to(username).get()
+        ifUserExists = root.child('userstuff').order_by_child('Email').equal_to(email).get()
         if len(ifUserExists) <= 0:
-            ifUserExists = root.child("Driverprofile").order_by_child('Username').equal_to(username).get()
+            ifUserExists = root.child("Driverprofile").order_by_child('Email').equal_to(email).get()
             if len(ifUserExists)<=0:
                 return redirect(url_for('/'))
             else:
                 for k, v in ifUserExists.items():
                     print(k, v)
                     # print(sha256_crypt.encrypt(password))
-                    print(v['Username'])
+                    print(v['Email'])
                     print(v['Password'])
 
-                    if username == v['Username'] and password == v['Password']:
+                    if email == v['Email'] and password == v['Password']:
                         session['logged_in'] = True
-                        session['Username'] = username
+                        session['Email'] = email
                         return redirect(url_for('createridepassenger'))
         else:
             for k, v in ifUserExists.items():
                 print(k, v)
                 # print(sha256_crypt.encrypt(password))
-                print(v['Username'])
+                print(v['Email'])
                 print(v['Password'])
 
-                if username == v['Username'] and password == v['Password']:
+                if email == v['Email'] and password == v['Password']:
                     session['logged_in'] = True
-                    session['Username'] = username
+                    session['Email'] = email
                     return redirect(url_for('createridepassenger'))
                 else:
                     return render_template('register.html', form=form)
@@ -183,7 +180,6 @@ def driverprofile():
 def registerdriver():
     form = registereddriverform(request.form)
     if request.method == 'POST' :
-        username = request.form["username"]
         name = request.form["name"]
         password = request.form["password"]
         nric = request.form["nric"]
@@ -193,11 +189,10 @@ def registerdriver():
         carmodel = request.form["carmodel"]
 
 
-        rd = registereddriverform(username,name, password, nric, email, contactno, license, carmodel)
+        rd = registereddriverform(name, password, nric, email, contactno, license, carmodel)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
-                'username': rd.get_username(),
                 'Name': rd.get_name(),
                 'Password': rd.get_password(),
                 'NRIC': rd.get_nric(),
