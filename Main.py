@@ -68,22 +68,20 @@ def createridedriver():
             return redirect(url_for('listofridesP'))
     return render_template('create_ride_driver.html', form= form)
 
-@app.route('/listofridesp')
+@app.route('/listofridespassenger')
 def listofridesP():
-    listofridesp = root.child('listofridesp').get()
+    listofridesp = root.child('listofridepassenger').get()
     list = []
     for pubid in listofridesp:
 
         eachupdate = listofridesp[pubid]
 
-        if eachupdate['usertype'] == 'driver':
-            ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride.set_pubid(pubid)
+        print(ride.get_pubid())
+        list.append(ride)
 
-            ride.set_pubid(pubid)
-            print(ride.get_pubid())
-            list.append(ride)
-
-    return render_template('listofridesP.html',  listofridesp = list )
+    return render_template('listofridespassenger.html',  listofridesp = list )
 
 
 @app.route('/ridedetails')
@@ -231,6 +229,19 @@ def createridepassenger():
             })
             return redirect(url_for('listofridesP'))
     return render_template('create_ride_passenger.html', form= form)
+
+@app.route('/listofridesdriver')
+def listofridesD():
+    listofridesd = root.child('listofridesp').get()
+    list = []
+    for pubid in listofridesd:
+        eachupdate = listofridesd[pubid]
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride.set_pubid(pubid)
+        print(ride.get_pubid())
+        list.append(ride)
+
+    return render_template('listofridesdriver.html',  listofridesd = list )
 
 
 
