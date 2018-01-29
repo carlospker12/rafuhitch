@@ -147,7 +147,7 @@ def login():
                     if email == v['Email'] and password == v['Password']:
                         session['logged_in'] = True
                         session['Email'] = email
-                        return redirect(url_for('createridepassenger'))
+                        return redirect(url_for('createridedriver'))
         else:
             for k, v in ifUserExists.items():
                 print(k, v)
@@ -180,7 +180,6 @@ def driverprofile():
 
 @app.route('/registerdriver',methods=['GET','POST'])
 def registerdriver():
-    form = registereddriverform(request.form)
     if request.method == 'POST' :
         name = request.form["name"]
         password = request.form["password"]
@@ -190,8 +189,7 @@ def registerdriver():
         license = request.form["license"]
         carmodel = request.form["carmodel"]
 
-
-        rd = registereddriverform(name, password, nric, email, contactno, license, carmodel)
+        rd = Driver(name, password, nric, email, contactno, license, carmodel)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
