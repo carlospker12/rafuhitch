@@ -6,7 +6,7 @@ from driver  import Driver
 import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
-#test your mother
+
 
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -67,7 +67,7 @@ def createridedriver():
                     'usertype':cdr.get_usertype()
 
             })
-            return redirect(url_for('listofridesP'))
+            return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
 
 @app.route('/listofridespassenger')
@@ -213,7 +213,7 @@ def registerdriver():
 def createridepassenger():
     form = createpassengerrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data.lower() == 'passenger':
+        if  form.userid.data.lower() == '':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
