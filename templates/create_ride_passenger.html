@@ -1,24 +1,73 @@
 {% extends "layout.html" %}
 {% block body %}
     <script src = "https://maps.googleapis.com/maps/api/js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRwr7QqmukOvz-3unD8qHUR3KXk1O7-W0&callback=initMap"
-  type="text/javascript"></script>
+    {#    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRwr7QqmukOvz-3unD8qHUR3KXk1O7-W0&callback=initMap"#}
+    {#  type="text/javascript"></script>#}
+    {% from "includes/_formhelper.html" import render_field %}
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    <script type="text/javascript">
+        var source, destination;
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        google.maps.event.addDomListener(window, 'load', function () {
+            new google.maps.places.SearchBox(document.getElementById('txtSource'));
+            new google.maps.places.SearchBox(document.getElementById('txtDestination'));
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+        });
+
+        function GetRoute() {
+            var mumbai = new google.maps.LatLng(1.3801, 103.8490);
+            var mapOptions = {
+                zoom: 7,
+                center: mumbai
+            };
+            map = new google.maps.Map(document.getElementById('dvMap'), mapOptions);
+            directionsDisplay.setMap(map);
+            directionsDisplay.setPanel(document.getElementById('dvPanel'));
+
+            //*********DIRECTIONS AND ROUTE**********************//
+            source = document.getElementById("txtSource").value;
+            destination = document.getElementById("txtDestination").value;
+
+            var request = {
+                origin: source,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+
+            //*********DISTANCE AND DURATION**********************//
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [source],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function (response, status) {
+                if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    var duration = response.rows[0].elements[0].duration.text;
+                    var dvDistance = document.getElementById("dvDistance");
+                    dvDistance.innerHTML = "";
+                    dvDistance.innerHTML += "Distance: " + distance + "<br />";
+                    dvDistance.innerHTML += "Duration:" + duration;
+
+                } else {
+                    alert("Unable to find the distance via road.");
+                }
+            });
+        }
+    </script>
 {% from "includes/_formhelper.html" import render_field %}
 
-    <script>
-         function loadMap() {
-
-            var mapOptions = {
-               center:new google.maps.LatLng(1.3783616,103.8506221),
-               zoom:18,
-               mapTypeId:google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(document.getElementById("sample"),mapOptions);
-         }
-
-         google.maps.event.addDomListener(window, 'load', loadMap);
-      </script>
+    
 
 <div class="container-fluid"></div>
 <form method="POST" action="" style="padding-left: 300px;padding-top: 50px">

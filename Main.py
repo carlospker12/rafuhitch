@@ -6,7 +6,7 @@ from driver  import Driver
 import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
-#test your mother
+
 
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -16,7 +16,7 @@ default_app = firebase_admin.initialize_app(cred, {
 root = db.reference()
 
 
-
+drivervalidation = 'driver'
 app = Flask(__name__)
 
 class registereddriverform(Form):
@@ -33,14 +33,14 @@ class createdriverrideform(Form):
     to_where = StringField('Destination', render_kw={"placeholder": "End"})
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
-    userid = StringField('Verification',[validators.Length(min=6, max=6)],render_kw={"placeholder": "Enter 'driver' "} )
+    userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
 
 class createpassengerrideform(Form):
     from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
     to_where = StringField('Destination', render_kw={"placeholder": "End"})
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
-    userid = StringField('Verification',[validators.Length(min=9, max=9)],render_kw={"placeholder": "Enter 'passenger' "} )
+    userid = StringField('Verification',render_kw={"placeholder": "Enter 'passenger' "} )
 
 @app.route("/homepage/")
 def homepage():
@@ -49,7 +49,7 @@ def homepage():
 def createridedriver():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data.lower() == 'driver':
+        if  form.userid.data.lower() == '':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
@@ -67,7 +67,7 @@ def createridedriver():
                     'usertype':cdr.get_usertype()
 
             })
-            return redirect(url_for('listofridesP'))
+            return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
 
 @app.route('/listofridespassenger')
@@ -213,7 +213,7 @@ def registerdriver():
 def createridepassenger():
     form = createpassengerrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.userid.data.lower() == 'passenger':
+        if  form.userid.data.lower() == '':
             from_where= form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
