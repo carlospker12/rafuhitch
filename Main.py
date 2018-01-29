@@ -42,7 +42,7 @@ class createpassengerrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'passenger' "} )
 
-@app.route("/homepage/")
+@app.route("/")
 def homepage():
     return render_template("homepage.html")
 @app.route('/createridedriver',methods=["GET","POST"])
@@ -126,7 +126,7 @@ class Log_InForm(Form):
     email = StringField('Email: ',[validators.Length(min=1,max=100),validators.DataRequired()])
     password = PasswordField('Password: ',[validators.DataRequired()])
 
-@app.route('/', methods =["GET","POST"])
+@app.route('/login', methods =["GET","POST"])
 def login():
     form = Log_InForm(request.form)
     if  request.method == "POST" and form.validate():
