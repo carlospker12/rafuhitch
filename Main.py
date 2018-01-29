@@ -20,13 +20,13 @@ drivervalidation = 'driver'
 app = Flask(__name__)
 
 class registereddriverform(Form):
-    name = StringField('Name')
-    password = StringField('Password')
-    nric = StringField('NRIC')
-    email = StringField('Email')
-    contactno = StringField('Contact Number')
-    license = StringField('Car License Plate Number')
-    carmodel = StringField('Car Brand & Model')
+    name = StringField('Name',[validators.DataRequired()])
+    password = StringField('Password',[validators.DataRequired()])
+    nric = StringField('NRIC',[validators.DataRequired()])
+    email = StringField('Email',[validators.DataRequired()])
+    contactno = StringField('Contact Number',[validators.DataRequired()])
+    license = StringField('Car License Plate Number',[validators.DataRequired()])
+    carmodel = StringField('Car Brand & Model',[validators.DataRequired()])
 
 class createdriverrideform(Form):
     from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})

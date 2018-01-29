@@ -26,37 +26,37 @@
           <div class="form-group">
             <div class="form-row">
                 <label for="Name">Name</label>
-                  <input class="form-control" name="name" id="name" type="text" placeholder="Name">
+                  <input class="form-control" required name="name" id="name" pattern="[A-Za-z]{1,}" title="Please enter only letters" type="text" placeholder="Name">
               </div>
             </div>
             <div class = 'form-group'>
                 <label for = 'nric'>NRIC</label>
-                <input class="form-control" name="nric" id="nric" type="text" placeholder="NRIC">
+                <input class="form-control" maxlength="9"  minlength="9" pattern="[A-Za-z].{2};[0-9].{7}" name="nric" required id="nric" type="text" placeholder="NRIC">
             </div>
             <div class="form-group">
                 <label for="Email">Email Address</label>
-                <input class="form-control" name="email" id="email" type="email" placeholder="Email">
+                <input class="form-control" name="email" id="email" required type="email" placeholder="Email">
             </div>
 
             <div class="form-group">
                 <label for="phonenumber">Phone number</label>
-                <input class="form-control" name="contactno" id="contactno" type="number" placeholder="Contactno">
+                <input class="form-control" name="contactno" id="contactno" maxlength="8" minlength="8" required type="number" placeholder="Contactno">
             </div>
 
             <div class="form-group">
                 <label for="licenseno">License Plate Number</label>
-                <input class="form-control" name="license" id="license" type="text" placeholder="license">
+                <input class="form-control" name="license" id="license" type="text" required placeholder="license">
             </div>
 
             <div class="form-group">
                 <label for="car">Car brand & Model</label>
-                <input class="form-control" name="carmodel" id="carmodel" type="text" placeholder="carmodel">
+                <input class="form-control" name="carmodel" required id="carmodel" type="text" placeholder="carmodel">
             </div>
 
             <div class="form-group">
                 <div class="form-row">
                         <label for="password">Password</label>
-                        <input class="form-control" name="password" id="password" type="password" placeholder="Password">
+                        <input class="form-control" name="password" required id="password" type="password" placeholder="Password">
                 </div>
             </div>
             <div>
