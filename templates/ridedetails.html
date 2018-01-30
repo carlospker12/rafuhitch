@@ -95,10 +95,17 @@
                 </div>
 
 
+                <p>   Status = {{ status }}
+                    {% if status == "Active"%}
+                    <img src="http://shop.sunbounce.com/21-thickbox_default/bulk-material-green-box-ca-520-cm-wide.jpg" style="height:20px">
+                    {%  else %}
+                    <img src="http://codiagnostics.com/wp-content/uploads/2014/07/text-box-lrg-red-square.png" style="height:20px">
+                    {% endif %}
 
+                </p>
                 <div class="form-group">
                     <div class="form-group col-md-4" style="margin-left: 432px">
-                        <input type="submit" style="margin-left: -130px" value="Submit" class="btn btn-info"/>
+                        <input type="submit" style="margin-left: -130px" value="Interested?" class="btn btn-info"/>
                         <input type="button" value="Get Route" onclick="GetRoute()" class="btn btn-info" />
                     </div>
                 </div>
