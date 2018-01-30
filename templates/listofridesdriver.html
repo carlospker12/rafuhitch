@@ -30,13 +30,16 @@
               </thead>
               <tbody>
                 {% for ride in listofridesd %}
-                <tr>
-                <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                <td>{{ ride.get_date() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                <td><a href="/ridedetails/{{ride.get_pubid()}}">Ride Details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                {%  endfor %}
+                    {% if ride.get_status == "Active" %}
+                        <tr>
+                        <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                        <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                        <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                        <td>{{ ride.get_date() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                        <td><a href="/ridedetails/{{ride.get_pubid()}}">Ride Details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                    {% endif %}
+                {% endfor %}
+
                 </tr>
               </tbody>
               </div>

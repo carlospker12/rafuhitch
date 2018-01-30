@@ -78,7 +78,7 @@ def listofridesP():
 
         eachupdate = listofridesp[pubid]
 
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['status'])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
