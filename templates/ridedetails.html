@@ -65,52 +65,49 @@
             });
         }
     </script>
-{% from "includes/_formhelper.html" import render_field %}
+    <div class="container-fluid"></div>
 
-
-
-<div class="container-fluid"></div>
-<form method="POST" action="" style="padding-left: 300px;padding-top: 50px">
-    <div class="form-group">
-        <h1 style="margin-bottom:20px">Ride Details</h1>
+    <form method="POST" action="" style="padding-left: 300px;padding-top: 50px">
+        <div class="form-group">
+            <h1 style="margin-bottom:20px">Ride Details</h1>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    {{ render_field(form.from_where, class_="form-control",value=ending) }}
+                    {{ render_field(form.from_where, class_="form-control",type="text", id="txtSource",value=ending) }}
                 </div>
-                <div class=" col-md-8">
-                        <div align="center" id = "sample" style = "width:1000px; height:500px;"></div>
+            </div>
 
+
+            <div style=" margin-left: -15px">
+                <div class="form-group" style="">
+                    <div class="form-group col-md-4">
+                        {{ render_field(form.to_where, class_="form-control",type="text", id="txtDestination",value=start) }}
                     </div>
-          </div>
-
-        </div>
-
-        <div style="margin-top: -425px; margin-left: -15px">
-        <div class="form-group" style="">
-            <div class="form-group col-md-4">
-                {{ render_field(form.to_where, class_="form-control" ,value=start ) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-group col-md-4">
-                {{ render_field(form.date, class_="form-control", value=dating) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-group col-md-4">
-                {{ render_field(form.time, class_="form-control",value=timing) }}
-            </div>
-        </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-md-4">
+                        {{ render_field(form.date,type='date', class_="form-control",value=dating) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-md-4">
+                        {{ render_field(form.time,type='time', class_="form-control",value=timing) }}
+                    </div>
+                </div>
 
 
-        <div class="form-group">
-            <div class="form-group col-md-4" style="margin-left: 432px">
-                <input type="submit" style="margin-left: -130px" value="Submit" class="btn btn-info"/>
-                <input type="button" value="Get Route" onclick="GetRoute()" class="btn btn-info" />
+
+                <div class="form-group">
+                    <div class="form-group col-md-4" style="margin-left: 432px">
+                        <input type="submit" style="margin-left: -130px" value="Submit" class="btn btn-info"/>
+                        <input type="button" value="Get Route" onclick="GetRoute()" class="btn btn-info" />
+                    </div>
+                </div>
+                <div class=" col-md-8"style="margin-left: 550px;margin-top: -450px">
+                    <div id="dvDistance">
+                    </div>
+                    <div id="dvMap" style="width: 500px; height:500px">
+                    </div>
+
+                </div>
             </div>
-        </div>
-        </div>
 {% endblock %}
-
-
-</form>
