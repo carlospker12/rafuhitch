@@ -105,7 +105,7 @@ def ridedetails(id):
 @app.route('/register', methods=["GET","POST"])
 def register():
     form = registereddriverform(request.form)
-    if request.method == "POST" and form.validate():
+    if request.method == "POST":
         name=form.name.data
         email=form.email.data
         password=form.password.data
