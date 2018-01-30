@@ -89,9 +89,14 @@ def listofridesP():
 @app.route('/ridedetails')
 @app.route('/ridedetails/<string:id>/', methods=['GET', 'POST'])
 def ridedetails(id):
-
-    listofridesp = root.child('listofridesp').get()
-
+    form = createdriverrideform(request.form)
+    if request.method == 'POST' and form.validate():
+        if form.userid.data.lower() == '':
+            from_where = form.from_where.data
+            to_where = form.to_where.data
+            date = form.date.data
+            time = form.time.data
+            userid = form.userid.data
     url = 'listofridesp/' + id
     eachpub = root.child(url).get()
 
@@ -100,7 +105,8 @@ def ridedetails(id):
                              eachpub['date'], eachpub['time'],eachpub['usertype'])
 
 
-    return render_template('ridedetails.html', ride=ride )
+
+    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(), ending=ride.get_from_where() )
 
 @app.route('/register', methods=["GET","POST"])
 def register():
@@ -231,7 +237,7 @@ def createridepassenger():
                     'usertype':crd.get_usertype()
 
             })
-            return redirect(url_for('listofridesP'))
+            return redirect(url_for('listofridesdriver'))
     return render_template('create_ride_passenger.html', form= form)
 
 @app.route('/listofridesdriver')
