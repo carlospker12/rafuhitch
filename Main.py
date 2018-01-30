@@ -106,7 +106,7 @@ def ridedetails(id):
 
 
 
-    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(), ending=ride.get_from_where() )
+    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(), ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date )
 
 @app.route('/register', methods=["GET","POST"])
 def register():
