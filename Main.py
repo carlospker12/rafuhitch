@@ -253,6 +253,9 @@ def listofridesD():
 
     return render_template('listofridesdriver.html',  listofridesd = list )
 
+@app.route("/rewards")
+def rewards():
+    return render_template("rewards.html")
 
 
 if __name__ == "__main__":
