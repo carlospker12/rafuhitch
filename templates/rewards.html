@@ -6,7 +6,10 @@
     <div class='col-sm-6'>
         <div class='jumbotron'>
             <h1>Rewards</h1>
-            <p>As a RafuHitch partner, you get to enjoy exclusive access to special deals</p>
+            <p style="font-size: 25px;">As a RafuHitch partner, you get to enjoy exclusive access to special deals</p><br>
+            {% for driver in driverprofile %}
+                <p style="font-size:30px;display: inline-block">Your Reward points: <a style="font-size:50px;display: inline-block">{{ driver.get_points() }}</a> </p>
+            {% endfor %}
         </div>
     </div>
 </div>
