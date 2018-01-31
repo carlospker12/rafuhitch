@@ -6,8 +6,7 @@ from driver  import Driver
 import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
-
-
+from points import Points
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://rafuhitch.firebaseio.com/'
@@ -71,7 +70,7 @@ def createridepassenger():
             return redirect(url_for('listofridesdriver'))
     return render_template('create_ride_passenger.html', form= form)
 
-@app.route('/createridedriver',methods=["GET","POST"])
+@app.route('/createridedriver/',methods=["GET","POST"])
 def createridedriver():
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
@@ -93,9 +92,21 @@ def createridedriver():
                     'usertype':cdr.get_usertype()
 
             })
+
+            dprofile = root.child('Driverprofile').get()
+
+            for pubid in dprofile:
+                pt = dprofile[pubid]
+                dprofile = Points(pt['Points'])
+                dprofile.set_pubid(pubid)
+                totalpoints = pt['Points']
+                newp = int(totalpoints) + 10
+                # print(newp)
+                firstchild = root.child('Driverprofile')
+                firstchild.child(pubid).update({'Points' : newp})
+
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
-
 
 @app.route('/listofridesdriver')
 def listofridesD():
@@ -180,7 +191,8 @@ def register():
         userinfo_db.push({
             "Name":userinfo.get_name(),
             "Email":userinfo.get_email(),
-            "Password":userinfo.get_password()
+            "Password":userinfo.get_password(),
+            "Points":0
         })
         return redirect(url_for("login"))
 
@@ -236,7 +248,7 @@ def driverprofile():
     for pubid in driver:
         print('2', driver[pubid])
         eachdriver = driver[pubid]
-        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'])
+        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
         driver.set_pubid(pubid)
         list.append(driver)
 
@@ -264,7 +276,8 @@ def registerdriver():
                 'Email': rd.get_email(),
                 'Contactno':rd.get_contactno(),
                 'License': rd.get_license(),
-                'Car Model':rd.get_carmodel()
+                'Car Model':rd.get_carmodel(),
+                'Points':0
         })
 
         return redirect(url_for('login'))
@@ -275,7 +288,17 @@ def registerdriver():
 
 @app.route("/rewards")
 def rewards():
-    return render_template("rewards.html")
+    driver = root.child('Driverprofile').get()
+    list = []
+    for pubid in driver:
+        print('2', driver[pubid])
+        eachdriver = driver[pubid]
+        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
+                        eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
+        driver.set_pubid(pubid)
+        list.append(driver)
+    return render_template('rewards.html', driverprofile = list)
+
 
 
 if __name__ == "__main__":
