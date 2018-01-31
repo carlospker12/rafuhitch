@@ -143,7 +143,7 @@ def login():
         if len(ifUserExists) <= 0:
             ifUserExists = root.child("Driverprofile").order_by_child('Email').equal_to(email).get()
             if len(ifUserExists)<=0:
-                return redirect(url_for('/'))
+                return redirect(url_for('register'))
             else:
                 for k, v in ifUserExists.items():
                     print(k, v)
