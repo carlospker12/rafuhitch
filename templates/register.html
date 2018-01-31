@@ -16,7 +16,16 @@
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin.css" rel="stylesheet">
 </head>
-
+{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
 <body class="bg-dark">
   <div class="container">
     <div class="card card-register mx-auto mt-5">
