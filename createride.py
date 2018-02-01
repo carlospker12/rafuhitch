@@ -1,6 +1,7 @@
 class Createdriverride:
-    def __init__(self, usertype, from_where, to, date, time, status="Active"):
+    def __init__(self, usertype, from_where, to, date, time,sessionemail, status="Active"):
         self.__pubid = ''
+        self.__sessionemail = sessionemail
         self.__from_where = from_where
         self.__to = to
         self.__usertype = usertype
@@ -13,6 +14,11 @@ class Createdriverride:
         return self.__pubid
     def set_pubid(self, pubid):
         self.__pubid = pubid
+
+    def get_sessionemail(self):
+        return self.__sessionemail
+    def set_sessionemail(self, sessionemail):
+        self.__sessionemail = sessionemail
 
     def get_from_where(self):
         return self.__from_where
