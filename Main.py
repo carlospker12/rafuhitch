@@ -390,7 +390,13 @@ def redeem():
         driver.set_pubid(pubid)
         list.append(driver)
 
-    return render_template('redeem.html', driverprofile = list)
+    import random
+
+    s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    passlen = 4
+    p = "".join(random.sample(s, passlen))
+
+    return render_template('redeem.html', driverprofile = list, code = p )
 
 
 
