@@ -16,16 +16,6 @@
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin.css" rel="stylesheet">
 </head>
-{% with messages = get_flashed_messages() %}
-	  {% if messages %}
-	    {% for message in messages %}
-		  <div class="alert alert-warning alert-dismissible" role="alert">
-		  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-			{{message}}
-		  </div>
-		{% endfor %}
-	  {% endif %}
-	{% endwith %}
 <body class="bg-dark">
   <div class="container">
     <div class="card card-register mx-auto mt-5">
@@ -53,12 +43,12 @@
               </div>
             </div>
           </div>
-          <input class="btn btn-primary btn-block" type="submit" value="Register"  />
+          <input class="btn btn-primary btn-block" type="submit" value="Register">
         </form>
           <br>
         <div class="text-center">
           <a class="d-block small " href="/registerdriver">Driver Registration</a>
-          <a class="d-block small mt-3" href="/" >Login Page</a>
+          <a class="d-block small mt-3" href="/login" >Login Page</a>
         </div>
       </div>
     </div>
