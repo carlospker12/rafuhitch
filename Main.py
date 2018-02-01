@@ -33,6 +33,8 @@ class createdriverrideform(Form):
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+    sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+
 
 class createpassengerrideform(Form):
     from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
@@ -60,11 +62,11 @@ def createridepassenger():
 
             crd_db = root.child('listofridepassenger')
             crd_db.push({
-                    'Starting position': crd.get_from_where(),
-                    'Destination': crd.get_to(),
-                    'date': crd.get_date(),
-                    'time': crd.get_time(),
-                    'usertype':crd.get_usertype()
+                'Starting position': crd.get_from_where(),
+                'Destination': crd.get_to(),
+                'date': crd.get_date(),
+                'time': crd.get_time(),
+                'usertype':crd.get_usertype()
 
             })
             return redirect(url_for('listofridesdriver'))
@@ -80,33 +82,58 @@ def createridedriver():
             date = form.date.data
             time = form.time.data
             userid = form.userid.data
+            sessionemail = form.sessionemail.data
 
-            cdr = Createdriverride(userid,from_where,to_where,date,time)
+            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail)
 
             cdr_db = root.child('listofridesp')
             cdr_db.push({
-                    'Starting position': cdr.get_from_where(),
-                    'Destination': cdr.get_to(),
-                    'date': cdr.get_date(),
-                    'time': cdr.get_time(),
-                    'usertype':cdr.get_usertype()
+                'sessionemail': session['Email'],
+                'Starting position': cdr.get_from_where(),
+                'Destination': cdr.get_to(),
+                'date': cdr.get_date(),
+                'time': cdr.get_time(),
+                'usertype':cdr.get_usertype()
 
             })
 
-            dprofile = root.child('Driverprofile').get()
+            # dprofile = root.child('Driverprofile').get()
 
-            for pubid in dprofile:
-                pt = dprofile[pubid]
-                dprofile = Points(pt['Points'])
-                dprofile.set_pubid(pubid)
-                totalpoints = pt['Points']
-                newp = int(totalpoints) + 10
-                # print(newp)
-                firstchild = root.child('Driverprofile')
-                firstchild.child(pubid).update({'Points' : newp})
+            # for pubid in dprofile:
+            #     # pt = dprofile[pubid]
+            #     dprofile = Points(pt['Points'])
+            #     dprofile.set_pubid(pubid)
+            #     totalpoints = pt['Points']
+            #     newp = int(totalpoints) + 10
+            #     # print(newp)
+            #     firstchild = root.child('Driverprofile')
+            #     firstchild.child(pubid).update({'Points' : newp})
 
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
+@app.route('/myrides/')
+def myrides():
+    listmyrides = root.child('listofridesp').get()
+    list= []
+    for pubid in listmyrides:
+        eachobj = listmyrides[pubid]
+        myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'])
+        myride.set_pubid(pubid)
+        print(myride.get_pubid())
+        list.append(myride)
+
+    return render_template('myride.html', listmyrides = list)
+# def listofridesD():
+#     listofridesd = root.child('listofridesp').get()
+#     list = []
+#     for pubid in listofridesd:
+#         eachupdate = listofridesd[pubid]
+#         ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+#         ride.set_pubid(pubid)
+#         print(ride.get_pubid())
+#         list.append(ride)
+#
+#     return render_template('listofridesdriver.html',  listofridesd = list )
 
 @app.route('/listofridesdriver')
 def listofridesD():
@@ -114,7 +141,7 @@ def listofridesD():
     list = []
     for pubid in listofridesd:
         eachupdate = listofridesd[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
@@ -270,14 +297,14 @@ def registerdriver():
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
-                'Name': rd.get_name(),
-                'Password': rd.get_password(),
-                'NRIC': rd.get_nric(),
-                'Email': rd.get_email(),
-                'Contactno':rd.get_contactno(),
-                'License': rd.get_license(),
-                'Car Model':rd.get_carmodel(),
-                'Points':0
+            'Name': rd.get_name(),
+            'Password': rd.get_password(),
+            'NRIC': rd.get_nric(),
+            'Email': rd.get_email(),
+            'Contactno':rd.get_contactno(),
+            'License': rd.get_license(),
+            'Car Model':rd.get_carmodel(),
+            'Points':0
         })
 
         return redirect(url_for('login'))
