@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+    <title>Rafuhitch - Reward </title>
+
+<div class="content-wrapper">
+    <div class='col-sm-6'>
+        <div class='jumbotron'>
+            <h1>Rewards</h1>
+            <p style="font-size: 25px;">As a RafuHitch partner, you get to enjoy exclusive access to special deals from the popular Yagufar and Amazoom!</p><br>
+            {% for driver in driverprofile %}
+                <p style="font-size:30px;display: inline-block">Your Reward points: <a style="font-size:50px;display: inline-block">{{ driver.get_points() }}</a> </p>
+            {% endfor %}
+        <br>
+        <br><br>
+
+
+            <h3 style="display: inline-block">Your promo code is:</h3>&nbsp &nbsp &nbsp<h2  style="color: green; display: inline-block"><strong>    ZOOM10</strong></h2>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
