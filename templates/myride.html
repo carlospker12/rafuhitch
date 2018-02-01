@@ -1,0 +1,13 @@
+{% block body %}
+    {% for myride in listmyrides %}
+        {% if session['Email'] == myride.get_sessionemail() %}
+            {{ myride.get_sessionemail() }}
+            {{ myride.get_usertype() }}
+            {{ myride.get_usertype() }}
+            {{ myride.get_from_where() }}
+            {{ myride.get_date() }}
+            {{ myride.get_time() }}
+
+        {% endif %}
+    {% endfor %}
+{% endblock %}
