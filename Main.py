@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, send_from_directory
 from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, PasswordField, form
 from createride import Createdriverride as Createdriverride
 from createrideP import createridep
@@ -7,6 +7,16 @@ import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
 from points import Points
+import os
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+UPLOAD = ('UPLOAD/')
+app = Flask(__name__)
 
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -241,7 +251,8 @@ def login():
         if len(ifUserExists) <= 0:
             ifUserExists = root.child("Driverprofile").order_by_child('Email').equal_to(email).get()
             if len(ifUserExists)<=0:
-                return redirect(url_for('register'))
+                flash("Invalid Login")
+                return redirect(url_for('login'))
             else:
                 for k, v in ifUserExists.items():
                     print(k, v)
@@ -265,7 +276,9 @@ def login():
                     session['Email'] = email
                     return redirect(url_for('createridepassenger'))
                 else:
-                    return render_template('register.html', form=form)
+
+                    flash("Invalid Login")
+                    return render_template('login.html', form=form)
 
     return render_template('login.html')
 
@@ -282,6 +295,33 @@ def driverprofile():
 
     return render_template('Driver_Profile.html', driverprofile = list)
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join('UPLOAD/', filename))
+            return redirect(url_for('uploaded_file', filename = filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+    #return render_template('Driver_Profile.html')
+
+@app.route('/show/<filename>')
+def uploaded_file(filename):
+    filename = 'http://127.0.0.1:50000/upload/' + filename
+    return render_template('Driver_Profile.html', filename=filename)
+
+@app.route('/uploads/<filename>')
+def send_file(filename):
+    return send_from_directory(UPLOAD, filename)
 
 @app.route('/registerdriver',methods=['GET','POST'])
 def registerdriver():
@@ -293,8 +333,9 @@ def registerdriver():
         contactno = request.form["contactno"]
         license = request.form["license"]
         carmodel = request.form["carmodel"]
+        points= 0
 
-        rd = Driver(name, password, nric, email, contactno, license, carmodel)
+        rd = Driver(name, password, nric, email, contactno, license, carmodel,points)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
@@ -354,9 +395,6 @@ def redeem():
 
 
 
-
-
 if __name__ == "__main__":
-    app.secret_key = 'secret123'
-    app.run(debug=True)
-    app.run(port="80")
+    app.secret_key = "secret123"
+    app.run(port=50000, debug=True)
