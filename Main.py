@@ -251,7 +251,8 @@ def login():
         if len(ifUserExists) <= 0:
             ifUserExists = root.child("Driverprofile").order_by_child('Email').equal_to(email).get()
             if len(ifUserExists)<=0:
-                return redirect(url_for('register'))
+                flash("Invalid Login")
+                return redirect(url_for('login'))
             else:
                 for k, v in ifUserExists.items():
                     print(k, v)
@@ -275,7 +276,9 @@ def login():
                     session['Email'] = email
                     return redirect(url_for('createridepassenger'))
                 else:
-                    return render_template('register.html', form=form)
+
+                    flash("Invalid Login")
+                    return render_template('login.html', form=form)
 
     return render_template('login.html')
 
@@ -330,8 +333,9 @@ def registerdriver():
         contactno = request.form["contactno"]
         license = request.form["license"]
         carmodel = request.form["carmodel"]
+        points= 0
 
-        rd = Driver(name, password, nric, email, contactno, license, carmodel)
+        rd = Driver(name, password, nric, email, contactno, license, carmodel,points)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
