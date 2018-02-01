@@ -339,7 +339,17 @@ def redeem():
         newp = int(totalpoints) - 100
         firstchild = root.child('Driverprofile')
         firstchild.child(pubid).update({'Points': newp})
-    return render_template('rewards.html')
+
+    driver = root.child('Driverprofile').get()
+    list = []
+    for pubid in driver:
+        eachdriver = driver[pubid]
+        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
+                        eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
+        driver.set_pubid(pubid)
+        list.append(driver)
+
+    return render_template('redeem.html', driverprofile = list)
 
 
 
