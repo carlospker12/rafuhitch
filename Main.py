@@ -7,6 +7,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 from signup import User
 from points import Points
+
 cred = credentials.Certificate('./cred/rafuhitch-firebase-adminsdk-ip26u-288aa3dbc4.json')
 default_app = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://rafuhitch.firebaseio.com/'
@@ -97,17 +98,17 @@ def createridedriver():
 
             })
 
-            # dprofile = root.child('Driverprofile').get()
+            dprofile = root.child('Driverprofile').get()
 
-            # for pubid in dprofile:
-            #     # pt = dprofile[pubid]
-            #     dprofile = Points(pt['Points'])
-            #     dprofile.set_pubid(pubid)
-            #     totalpoints = pt['Points']
-            #     newp = int(totalpoints) + 10
-            #     # print(newp)
-            #     firstchild = root.child('Driverprofile')
-            #     firstchild.child(pubid).update({'Points' : newp})
+            for pubid in dprofile:
+                pt = dprofile[pubid]
+                dprofile = Points(pt['Points'])
+                dprofile.set_pubid(pubid)
+                totalpoints = pt['Points']
+                newp = int(totalpoints) + 10
+                # print(newp)
+                firstchild = root.child('Driverprofile')
+                firstchild.child(pubid).update({'Points' : newp})
 
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
