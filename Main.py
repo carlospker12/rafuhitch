@@ -109,16 +109,14 @@ def createridedriver():
             })
 
             dprofile = root.child('Driverprofile').get()
-
             for pubid in dprofile:
                 pt = dprofile[pubid]
-                dprofile = Points(pt['Points'])
-                dprofile.set_pubid(pubid)
-                totalpoints = pt['Points']
-                newp = int(totalpoints) + 10
-                # print(newp)
-                firstchild = root.child('Driverprofile')
-                firstchild.child(pubid).update({'Points' : newp})
+                if pt['Email'] == session['Email']:
+                    totalpoints = pt['Points']
+                    newp = int(totalpoints) + 10
+                    # print(newp)
+                    firstchild = root.child('Driverprofile')
+                    firstchild.child(pubid).update({'Points' : newp})
 
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
@@ -154,7 +152,7 @@ def listofridesD():
         eachupdate = listofridesd[pubid]
         ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'])
         ride.set_pubid(pubid)
-        print(ride.get_pubid())
+        # print(ride.get_pubid())
         list.append(ride)
 
     return render_template('listofridesdriver.html',  listofridesd = list )
@@ -287,11 +285,12 @@ def driverprofile():
     driver = root.child('Driverprofile').get()
     list = []
     for pubid in driver:
-        print('2', driver[pubid])
+        # print('2', driver[pubid])
         eachdriver = driver[pubid]
-        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
-        driver.set_pubid(pubid)
-        list.append(driver)
+        if eachdriver['Email'] == session['Email']:
+            driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
+            driver.set_pubid(pubid)
+            list.append(driver)
 
     return render_template('Driver_Profile.html', driverprofile = list)
 
@@ -348,46 +347,40 @@ def registerdriver():
 
 @app.route("/rewards")
 def rewards():
-    driver = root.child('Driverprofile').get()
-    list = []
-    for pubid in driver:
-        eachdriver = driver[pubid]
-        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
-                        eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
-        driver.set_pubid(pubid)
-        list.append(driver)
-    return render_template('rewards.html', driverprofile = list)
+    dprofile = root.child('Driverprofile').get()
+    for pubid in dprofile:
+        pt = dprofile[pubid]
+        if pt['Email'] == session['Email']:
+            totalpoints = pt['Points']
+
+    return render_template('rewards.html', points = totalpoints)
 
 
 @app.route("/redeem")
 def redeem():
     dprofile = root.child('Driverprofile').get()
-
     for pubid in dprofile:
         pt = dprofile[pubid]
-        dprofile = Points(pt['Points'])
-        dprofile.set_pubid(pubid)
-        totalpoints = pt['Points']
-        newp = int(totalpoints) - 100
-        firstchild = root.child('Driverprofile')
-        firstchild.child(pubid).update({'Points': newp})
+        if pt['Email'] == session['Email']:
+            totalpoints = pt['Points']
+            if totalpoints >= 100:
+                newp = int(totalpoints) - 100
+                # print(newp)
+                firstchild = root.child('Driverprofile')
+                firstchild.child(pubid).update({'Points': newp})
+                pt = dprofile[pubid]
+                if pt['Email'] == session['Email']:
+                    totalpoints = pt['Points']
+            else:
+                return render_template('redeemfail.html')
 
-    driver = root.child('Driverprofile').get()
-    list = []
-    for pubid in driver:
-        eachdriver = driver[pubid]
-        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
-                        eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
-        driver.set_pubid(pubid)
-        list.append(driver)
+        import random
 
-    import random
+        s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        passlen = 4
+        p = "".join(random.sample(s, passlen))
 
-    s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    passlen = 4
-    p = "".join(random.sample(s, passlen))
-
-    return render_template('redeem.html', driverprofile = list, code = p )
+    return render_template('redeem.html', points = totalpoints, code = p )
 
 
 
