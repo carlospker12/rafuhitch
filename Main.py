@@ -165,7 +165,7 @@ def listofridesP():
     list = []
     for pubid in listofridesp:
         eachupdate = listofridesp[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
@@ -187,7 +187,7 @@ def ridedetail(id):
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'])
 
     return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),
                            status=ride.get_status(), ending=ride.get_from_where(), timing=ride.get_time(),
@@ -209,7 +209,7 @@ def ridedetails(id):
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionpub'])
 
 
 
