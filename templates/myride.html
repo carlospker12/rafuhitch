@@ -1,13 +1,129 @@
+{#{% block body %}#}
+{#    {% for myride in listmyrides %}#}
+{#        {% session['Email'] == myride.get_sessionemail() %}#}
+{#            {{ myride.get_sessionemail() }}#}
+{#            {{ myride.get_usertype() }}#}
+{#            {{ myride.get_usertype() }}#}
+{#            {{ myride.get_from_where() }}#}
+{#            {{ myride.get_date() }}#}
+{#            {{ myride.get_time() }}#}
+{##}
+{#        {% endif %}#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+{#{% extends "layout.html" %}#}
+{##}
+{#<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">#}
+{#    <div>#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Starting Position</th>#}
+{#            <th>Destination</th>#}
+{#            <th>Date</th>#}
+{#            <th>Time</th>#}
+{#            <th>Ride Details</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for myride in listmyrides %}#}
+{#            <tr>#}
+{#                {% if session['Email'] == myride.get_sessionemail() %}#}
+{#                <td>{{ myride.get_sessionemail() }}#}
+{#                <td>{{ myride.get_usertype() }}#}
+{#                <td>{{ myride.get_usertype() }}#}
+{#                <td>{{ myride.get_from_where() }}#}
+{#                <td>{{ myride.get_date() }}#}
+{#                <td>{{ myride.get_time() }}#}
+{##}
+{#                {% endif %}#}
+{#        {% endfor %}#}
+{##}
+{#        </tr>#}
+{#        </tbody>#}
+{#    </div>#}
+{#</table>#}
+{% extends "layout.html" %}
 {% block body %}
-    {% for myride in listmyrides %}
-        {% if session['Email'] == myride.get_sessionemail() %}
-            {{ myride.get_sessionemail() }}
-            {{ myride.get_usertype() }}
-            {{ myride.get_usertype() }}
-            {{ myride.get_from_where() }}
-            {{ myride.get_date() }}
-            {{ myride.get_time() }}
+    <html>
+    <title>Rafuhitch - List of rides Driver</title>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="createridedriver">Create a Ride</a>
+                </li>
+                <li class="breadcrumb-item active"> List of Rides</li>
+            </ol>
+            <!-- Example DataTables Card-->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i> List of Rides</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <div>
+                                <thead>
+                                <tr>
+                                    <th>Starting Position</th>
+                                    <th>Destination</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Ride Details</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for myride in listmyrides %}
+                                    <tr>
+                                    {% if session['Email'] == myride.get_sessionemail() %}
+                                        <td>{{ myride.get_sessionemail() }}
+                                        <td>{{ myride.get_usertype() }}
+                                        <td>{{ myride.get_usertype() }}
+                                        <td>{{ myride.get_from_where() }}
+                                        <td>{{ myride.get_date() }}
+                                        <td>{{ myride.get_time() }}
 
-        {% endif %}
-    {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                </tr>
+                                </tbody>
+                            </div>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Note:Those created by 'driver' should only be picked by riders<br>Note:Those created by 'riders' should only be picked by drivers </div>
+            </div>
+        </div>
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Page level plugin JavaScript-->
+        <script src="vendor/datatables/jquery.dataTables.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin.min.js"></script>
+        <!-- Custom scripts for this page-->
+        <script src="js/sb-admin-datatables.min.js"></script>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="/static/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="/static/js/sb-admin-datatables.min.js"></script>
+    </div>
 {% endblock %}
+
+</html>
