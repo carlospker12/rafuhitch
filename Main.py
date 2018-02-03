@@ -384,12 +384,15 @@ def redeem():
             else:
                 return render_template('redeemfail.html')
 
-        import random
+    import random
 
-        s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        passlen = 4
-        p = "".join(random.sample(s, passlen))
+    s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    passlen = 4
+    p = "".join(random.sample(s, passlen))
 
+    f = open("promocodes.txt", "a+")
+    f.write('ZOOM10%s'%(p) +'\n')
+    f.close()
     return render_template('redeem.html', points = totalpoints, code = p )
 
 
