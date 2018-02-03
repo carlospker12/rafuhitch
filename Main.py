@@ -282,16 +282,24 @@ def login():
 
 @app.route('/driverprofile')
 def driverprofile():
-    driver = root.child('Driverprofile').get()
-    list = []
-    for pubid in driver:
-        # print('2', driver[pubid])
-        eachdriver = driver[pubid]
-        if eachdriver['Email'] == session['Email']:
-            driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
-            driver.set_pubid(pubid)
-            list.append(driver)
+    # driver = root.child('Driverprofile').get()
+    # list = []
+    # for pubid in driver:
+    #     # print('2', driver[pubid])
+    #     eachdriver = driver[pubid]
+    #     if eachdriver['Email'] == session['Email']:
+    #         driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
+    #                         eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], eachdriver['sessionemail'])
+    #         driver.set_pubid(pubid)
+    #         list.append(driver)
 
+    dprofile = root.child('Driverprofile').get()
+    list = []
+    for pubid in dprofile:
+        pt = dprofile[pubid]
+        if pt['Email'] == session['Email']:
+            totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points']
+            list.append(totalpoints)
     return render_template('Driver_Profile.html', driverprofile = list)
 
 @app.route('/upload', methods=['GET', 'POST'])
