@@ -228,7 +228,8 @@ def register():
             "Name":userinfo.get_name(),
             "Email":userinfo.get_email(),
             "Password":userinfo.get_password(),
-            "Points":0
+            "Points":0,
+            'sessionemail': userinfo.get_email()
         })
         return redirect(url_for("login"))
 
@@ -344,7 +345,8 @@ def registerdriver():
             'Contactno':rd.get_contactno(),
             'License': rd.get_license(),
             'Car Model':rd.get_carmodel(),
-            'Points':0
+            'Points':0,
+            'sessionemail':rd.get_email()
         })
 
         return redirect(url_for('login'))
