@@ -38,6 +38,7 @@ class registereddriverform(Form):
     contactno = StringField('Contact Number',[validators.DataRequired()])
     license = StringField('Car License Plate Number',[validators.DataRequired()])
     carmodel = StringField('Car Brand & Model',[validators.DataRequired()])
+    summary = StringField('Summary', [validators.DataRequired()])
 
 class createdriverrideform(Form):
     from_where = StringField('Starting Position',render_kw={"placeholder": "Start"})
@@ -358,7 +359,7 @@ def driverprofile():
     for pubid in dprofile:
         pt = dprofile[pubid]
         if pt['Email'] == session['Email']:
-            totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points']
+            totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points'], pt['Summary']
             list.append(totalpoints)
     return render_template('Driver_Profile.html', driverprofile = list)
 
@@ -405,9 +406,10 @@ def registerdriver():
         contactno = request.form["contactno"]
         license = request.form["license"]
         carmodel = request.form["carmodel"]
+        summary = request.form['summary']
         points= 0
 
-        rd = Driver(name, password, nric, email, contactno, license, carmodel,points)
+        rd = Driver(name, password, nric, email, contactno, license, carmodel, points, summary)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
@@ -419,6 +421,7 @@ def registerdriver():
             'License': rd.get_license(),
             'Car Model':rd.get_carmodel(),
             'Points':0,
+            'Summary': rd.get_summary(),
             'sessionemail':rd.get_email()
         })
 

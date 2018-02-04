@@ -34,11 +34,10 @@
                     <div class="jumbotron">
                      {% for driver in driverprofile %}
                     <h2>{{ driver[0] }}</h2>
-                    {% endfor %}
-                        <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East
-                            area. I think of myself as friendly and i want to earn money to eat.</p>
-                        <br>
 
+                        <p>{{ driver[6] }}</p>
+                        <br>
+                    {% endfor %}
                         {% for driver in driverprofile %}
                             <p>Email: {{ driver[1] }}</p>
 
