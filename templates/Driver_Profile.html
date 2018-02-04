@@ -30,19 +30,25 @@
                 </div>
 
                 <div class='col-sm-6'>
-                    <div class='jumbotron'>
-                    <h2>Welcome to my Profile</h2>
-                    <br>
+                    <div style="margin-left:20px;">
+                    <div class="jumbotron"></div>
+                     {% for driver in driverprofile %}
+                    <h2>{{ driver[0] }}</h2>
+                    {% endfor %}
                         <p>Hit me up if you need some rides. I drives a lot, especially from Ang Mo Kio to Jurong East
                             area. I think of myself as friendly and i want to earn money to eat.</p>
-
+                        <br>
+                    </div>
                         {% for driver in driverprofile %}
-                            <p>Name: {{ driver[0] }}</p>
-                            <p>Email: {{ driver[1] }}</p>
-                            <p>Contact Number: {{ driver[2] }}</p>
-                            <p>License Plate Number: {{ driver[3] }}</p>
-                            <p>Car Model & Brand: {{ driver[4] }}</p>
-                            <p>Reward points: {{ driver[5] }}</p>
+                            <p>Email: {{ driver[1] }}
+                                <br>
+                                Contact Number: {{ driver[2] }}
+                                <br>
+                                License Plate Number: {{ driver[3] }}
+                                <br>
+                                Car Model & Brand: {{ driver[4] }}
+                                <br>
+                                Reward points: {{ driver[5] }}</p>
                             <p>Find out more about Rewards Points <a href="/rewards">here</a> </p>
                         {% endfor %}
 
