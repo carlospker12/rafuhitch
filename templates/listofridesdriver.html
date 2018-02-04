@@ -31,16 +31,16 @@
                             </thead>
                             <tbody>
                             {% for ride in listofridesd %}
-                                <tr>
-                                <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                                <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                                <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-                                <td>{{ ride.get_date() }}</td>
-                                <td>{{ ride.get_schedule() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-{#                                {% for s in schedulelist %}#}
-{#                                <td> {{ s.get_Monday}}{{ s.get_Tuesday}}{{ s.get_Wednesday}}{{ s.get_Thursday}}{{ s.get_Friday}}{{ s.get_Saturday}}{{ s.get_Sunday}}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
-{#                                    {% endfor %}#}
-                                <td><a href="/ridedetails/{{ride.get_pubid()}}">Ride Details</a></td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                                {% if ride.get_status() == "Active" %}
+                                    <tr>
+                                    <td>{{ ride.get_usertype() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                                    <td>{{ ride.get_from_where() }}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                                    <td>{{ ride.get_to()}}</td>  {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                                    <td>{{ ride.get_date() }}</td>
+                                    <td>{{ ride.get_schedule() }}</td> {#I HAVE NO IDEA WHY THEY ARE ALL MIXED UP  #}
+                                    <td><a href="/ridedetails/{{ride.get_pubid()}}">Ride Details</a></td>
+
+                            {% endif %}
                             {% endfor %}
 
                             </tr>

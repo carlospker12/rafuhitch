@@ -47,6 +47,7 @@ class createdriverrideform(Form):
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+    status = "Active"
 
 class schedule(Form):
     Monday = StringField('0',render_kw={"placeholder": "Start"})
@@ -110,8 +111,9 @@ def createridedriver():
             userid = form.userid.data
             sessionemail = form.sessionemail.data
             schedule = form.schedule.data
+            status="Active"
 
-            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule)
+            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
 
             cdr_db = root.child('listofridesp')
             cdr_db.push({
@@ -122,6 +124,7 @@ def createridedriver():
                 'time': cdr.get_time(),
                 'usertype':cdr.get_usertype(),
                 'schedule':request.form.getlist('days'),
+                'status':"Active"
 
 
 
@@ -145,9 +148,17 @@ def createridedriver():
 def myrides():
     listmyrides = root.child('listofridesp').get()
     list= []
+    if request.method=="POST":
+        id=session.get("sessionemail","")
+        status="Taken"
+        data={"status":status}
+        root.child("myrides/"+id).update(data)
+
+
+
     for pubid in listmyrides:
         eachobj = listmyrides[pubid]
-        myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'])
+        myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'],eachobj['status'])
         myride.set_pubid(pubid)
         print(myride.get_pubid())
         list.append(myride)
@@ -179,7 +190,7 @@ def listofridesD():
     #     list1.append(scheduleid)
     for pubid in listofridesd:
         eachupdate = listofridesd[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'],eachupdate["status"])
         ride.set_pubid(pubid)
         # print(ride.get_pubid())
         list.append(ride)
@@ -192,7 +203,7 @@ def listofridesP():
     list = []
     for pubid in listofridesp:
         eachupdate = listofridesp[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate["status"])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
