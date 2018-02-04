@@ -80,7 +80,7 @@ def createridepassenger():
                 'usertype':crd.get_usertype()
 
             })
-            return redirect(url_for('listofridesdriver'))
+            return redirect(url_for('listofridesP'))
     return render_template('create_ride_passenger.html', form= form)
 
 @app.route('/createridedriver/',methods=["GET","POST"])
