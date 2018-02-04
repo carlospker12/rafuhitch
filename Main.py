@@ -259,7 +259,7 @@ def ridedetails(id):
                 "Starting position": from_where,
                 "Destination": to_where,
                 "date":date,
-                "sessionemail":"sessionemail",
+                "sessionemail":session["Email"],
                 "time":time,
                 "usertype":userid,
                 "schedule":schedule,
