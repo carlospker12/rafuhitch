@@ -8,6 +8,7 @@ from firebase_admin import credentials, db
 from signup import User
 from points import Points
 import os
+from schedule import schedule
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -45,6 +46,16 @@ class createdriverrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+    schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+
+class schedule(Form):
+    Monday = StringField('0',render_kw={"placeholder": "Start"})
+    Tuesday = StringField('1', render_kw={"placeholder": "End"})
+    Wednesday = StringField('2',render_kw={"placeholder": "DD/MM/YYYY"})
+    Thursday = StringField('3',render_kw={"placeholder": "Time"})
+    Friday = StringField('4',render_kw={"placeholder": "Enter 'driver' "} )
+    Saturday = StringField('5',render_kw={"placeholder": "Enter 'driver' "} )
+    Sunday = StringField('6',render_kw={"placeholder": "Enter 'driver' "} )
 
 
 class createpassengerrideform(Form):
@@ -89,6 +100,7 @@ def createridepassenger():
 @app.route('/createridedriver/',methods=["GET","POST"])
 def createridedriver():
     form = createdriverrideform(request.form)
+    list = []
     if request.method == 'POST' and form.validate():
         if  form.userid.data.lower() == '':
             from_where= form.from_where.data
@@ -97,8 +109,9 @@ def createridedriver():
             time = form.time.data
             userid = form.userid.data
             sessionemail = form.sessionemail.data
+            schedule = form.schedule.data
 
-            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail)
+            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule)
 
             cdr_db = root.child('listofridesp')
             cdr_db.push({
@@ -107,7 +120,10 @@ def createridedriver():
                 'Destination': cdr.get_to(),
                 'date': cdr.get_date(),
                 'time': cdr.get_time(),
-                'usertype':cdr.get_usertype()
+                'usertype':cdr.get_usertype(),
+                'schedule':request.form.getlist('days'),
+
+
 
             })
 
@@ -120,6 +136,8 @@ def createridedriver():
                     # print(newp)
                     firstchild = root.child('Driverprofile')
                     firstchild.child(pubid).update({'Points' : newp})
+            print(request.form.getlist('days'))
+            schedule = [request.form.getlist('days')]
 
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
@@ -150,15 +168,23 @@ def myrides():
 @app.route('/listofridesdriver')
 def listofridesD():
     listofridesd = root.child('listofridesp').get()
+    # schedulelist = root.child('listofridesp').order_by_child('schedule').get()
+    # list1 =[]
     list = []
+    # for sid in schedulelist:
+    #     eachid = schedulelist[sid]
+    #     scheduleid = schedule(eachid['0'],eachid['1'],eachid['2'],eachid['3'],eachid['4'],eachid['5'],eachid['6'])
+    #     scheduleid.set_sid(sid)
+    #     print(scheduleid.get_sid)
+    #     list1.append(scheduleid)
     for pubid in listofridesd:
         eachupdate = listofridesd[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'])
         ride.set_pubid(pubid)
         # print(ride.get_pubid())
         list.append(ride)
 
-    return render_template('listofridesdriver.html',  listofridesd = list )
+    return render_template('listofridesdriver.html',  listofridesd = list,schedulelist = list )
 
 @app.route('/listofridespassenger')
 def listofridesP():
@@ -210,7 +236,7 @@ def ridedetails(id):
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionpub'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'])
 
 
 

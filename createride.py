@@ -1,5 +1,5 @@
 class Createdriverride:
-    def __init__(self, usertype, from_where, to, date, time,sessionemail, status="Active",points=0):
+    def __init__(self, usertype, from_where, to, date, time,sessionemail,schedule, status="Active",points=0):
         self.__pubid = ''
         self.__sessionemail = sessionemail
         self.__from_where = from_where
@@ -9,12 +9,18 @@ class Createdriverride:
         self.__time = time
         self.__status=status
         self.__points=points
+        self.__schedule = schedule
 
 
     def get_pubid(self):
         return self.__pubid
     def set_pubid(self, pubid):
         self.__pubid = pubid
+
+    def get_schedule(self):
+        return self.__schedule
+    def set_schedule(self, schedule):
+        self.__schedule = schedule
 
     def get_points(self):
         return self.__points
