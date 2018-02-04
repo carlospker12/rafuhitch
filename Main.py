@@ -122,6 +122,7 @@ def createridedriver():
                 'time': cdr.get_time(),
                 'usertype':cdr.get_usertype(),
                 'schedule':request.form.getlist('days'),
+                'status':cdr.get_status()
 
 
 
@@ -147,7 +148,7 @@ def myrides():
     list= []
     for pubid in listmyrides:
         eachobj = listmyrides[pubid]
-        myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'])
+        myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'],eachobj['status'])
         myride.set_pubid(pubid)
         print(myride.get_pubid())
         list.append(myride)
