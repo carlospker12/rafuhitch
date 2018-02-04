@@ -95,7 +95,20 @@ def createridepassenger():
                 'sessionemail': session['Email'],
 
             })
-            return redirect(url_for('listofridesP'))
+
+
+            pprofile = root.child('userstuff').get()
+            for pubid in pprofile:
+                pt = pprofile[pubid]
+                if pt['Email'] == session['Email']:
+                    totalpoints = pt['Points']
+                    newp = int(totalpoints) + 10
+                    # print(newp)
+                    firstchild = root.child('userstuff')
+                    firstchild.child(pubid).update({'Points': newp})
+
+        return redirect(url_for('listofridesP'))
+
     return render_template('create_ride_passenger.html', form= form)
 
 @app.route('/createridedriver/',methods=["GET","POST"])
@@ -339,16 +352,6 @@ def login():
 
 @app.route('/driverprofile')
 def driverprofile():
-    # driver = root.child('Driverprofile').get()
-    # list = []
-    # for pubid in driver:
-    #     # print('2', driver[pubid])
-    #     eachdriver = driver[pubid]
-    #     if eachdriver['Email'] == session['Email']:
-    #         driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'],
-    #                         eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], eachdriver['sessionemail'])
-    #         driver.set_pubid(pubid)
-    #         list.append(driver)
 
     dprofile = root.child('Driverprofile').get()
     list = []
@@ -358,6 +361,20 @@ def driverprofile():
             totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points']
             list.append(totalpoints)
     return render_template('Driver_Profile.html', driverprofile = list)
+
+
+@app.route('/passengerprofile')
+def passengerprofile():
+
+
+    pprofile = root.child('userstuff').get()
+    list = []
+    for pubid in pprofile:
+        pt = pprofile[pubid]
+        if pt['Email'] == session['Email']:
+            totalpoints = pt['Name'], pt['Email'], pt['Points']
+            list.append(totalpoints)
+    return render_template('Passenger_Profile.html', passenger = list)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -413,11 +430,19 @@ def registerdriver():
 
 @app.route("/rewards")
 def rewards():
+
     dprofile = root.child('Driverprofile').get()
     for pubid in dprofile:
         pt = dprofile[pubid]
         if pt['Email'] == session['Email']:
             totalpoints = pt['Points']
+
+
+    pprofile = root.child('userstuff').get()
+    for pubid in pprofile:
+        point = pprofile[pubid]
+        if point['Email'] == session['Email']:
+            totalpoints = point['Points']
 
     return render_template('rewards.html', points = totalpoints)
 
@@ -440,6 +465,21 @@ def redeem():
             else:
                 return render_template('redeemfail.html')
 
+    pprofile = root.child('userstuff').get()
+    for pubid in pprofile:
+        point = pprofile[pubid]
+        if point['Email'] == session['Email']:
+            totalpoints = point['Points']
+            if totalpoints >= 100:
+                newp = int(totalpoints) - 100
+                # print(newp)
+                firstchild = root.child('userstuff')
+                firstchild.child(pubid).update({'Points': newp})
+                point = pprofile[pubid]
+                if point['Email'] == session['Email']:
+                    totalpoints = point['Points']
+            else:
+                return render_template('redeemfail.html')
     import random
 
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -447,7 +487,7 @@ def redeem():
     p = "".join(random.sample(s, passlen))
 
     f = open("promocodes.txt", "a+")
-    f.write('ZOOM10%s'%(p) +'\n')
+    f.write('RAFU%s'%(p) +'\n')
     f.close()
     return render_template('redeem.html', points = totalpoints, code = p )
 
