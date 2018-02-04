@@ -1,5 +1,5 @@
 class Driver:
-    def __init__(self, name, password, nric, email, contactno, license, carmodel, points, sessonemail):
+    def __init__(self, name, password, nric, email, contactno, license, carmodel, points):
         self.__pubid = ''
         self.__name = name
         self.__password = password
@@ -9,7 +9,6 @@ class Driver:
         self.__license = license
         self.__carmodel = carmodel
         self.__points = points
-        self.__sessionemail = sessonemail
 
     def set_name(self, name):
         self.__name = name
@@ -49,9 +48,3 @@ class Driver:
         return self.__pubid
     def set_pubid(self, pubid):
         self.__pubid = pubid
-
-    def get_sessionemail(self):
-        return self.__sessionemail
-
-    def set_sessionemail(self, sessionemail):
-        self.__sessionemail = sessionemail
