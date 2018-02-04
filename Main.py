@@ -47,7 +47,7 @@ class createdriverrideform(Form):
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
-    status = "Active"
+
 
 class schedule(Form):
     Monday = StringField('0',render_kw={"placeholder": "Start"})
@@ -237,21 +237,37 @@ def ridedetail(id):
 def ridedetails(id):
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-        if form.userid.data.lower() == '':
-            from_where = form.from_where.data
-            to_where = form.to_where.data
-            date = form.date.data
-            time = form.time.data
-            userid = form.userid.data
+            if form.userid.data.lower() == '':
+                from_where = form.from_where.data
+                to_where = form.to_where.data
+                date = form.date.data
+                time = form.time.data
+                userid = form.userid.data
+                schedule = form.schedule.data
+
     url = 'listofridesp/' + id
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'],eachpub["status"])
+
+    if request.method == "POST":
+        if request.form["taken"] == "Interested?":
+            status ="Taken"
+            ride = root.child("listofridesp/" + id)
+            ride.set({
+                "Starting position": from_where,
+                "Destination": to_where,
+                "date":date,
+                "sessionemail":"sessionemail",
+                "time":time,
+                "usertype":userid,
+                "schedule":schedule,
+                "status": "Taken"})
+            return redirect(url_for("listofridesD"))
 
 
-
-    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),status=ride.get_status() , ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date )
+    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),status=ride.get_status() , ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date)
 
 @app.route('/register', methods=["GET","POST"])
 def register():
