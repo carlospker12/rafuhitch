@@ -1,5 +1,5 @@
 class createridep:
-    def __init__(self, usertype, from_where, to, date, time,status="Active"):
+    def __init__(self, usertype, from_where, to, date, time,sessionemail,status="Active"):
         self.__pubid = ''
         self.__from_where = from_where
         self.__to = to
@@ -18,6 +18,11 @@ class createridep:
         return self.__from_where
     def set_from_where(self, from_where):
         self.__from_where = from_where
+
+    def get_sessionemail(self):
+        return self.__sessionemail
+    def set_sessionemail(self, sessionemail):
+        self.__sessionemail = sessionemail
 
     def get_usertype(self):
         return self.__usertype
