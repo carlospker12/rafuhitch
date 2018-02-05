@@ -10,6 +10,7 @@ from points import Points
 import os
 from schedule import schedule
 from werkzeug.utils import secure_filename
+from updatedriver import Updatedriver
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 def allowed_file(filename):
@@ -39,6 +40,17 @@ class registereddriverform(Form):
     license = StringField('Car License Plate Number',[validators.DataRequired()])
     carmodel = StringField('Car Brand & Model',[validators.DataRequired()])
     summary = StringField('Summary', [validators.DataRequired()])
+
+class updateddriverform(Form):
+    name = StringField('Name', [validators.DataRequired()])
+    password = StringField('Password', [validators.DataRequired()])
+    nric = StringField('NRIC', [validators.DataRequired()])
+    email = StringField('Email', [validators.DataRequired()])
+    contactno = StringField('Contact Number', [validators.DataRequired()])
+    license = StringField('Car License Plate Number', [validators.DataRequired()])
+    carmodel = StringField('Car Brand & Model', [validators.DataRequired()])
+    summary = StringField('Summary', [validators.DataRequired()])
+    sessionemail = StringField('Verification', render_kw={"placeholder": "Enter 'driver' "})
 
 class createdriverrideform(Form):
     from_where = StringField('Starting Position',[validators.DataRequired()],render_kw={"placeholder": "Start"})
@@ -383,8 +395,44 @@ def driverprofile():
         if pt['Email'] == session['Email']:
             totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points'], pt['Summary']
             list.append(totalpoints)
-    return render_template('Driver_Profile.html', driverprofile = list)
+    return render_template('Driver_Profile.html', driverprofile = list, pubid = pubid)
 
+# @app.route('/update')
+@app.route('/update_dprofile/<string:id>/', methods=['GET', 'POST'])
+def update_driverprofile(id):
+    form = updateddriverform(request.form)
+    if request.method == 'POST' and form.validate() :
+        name = form.name.data
+        password = form.password.data
+        nric = form.nric.data
+        email = form.email.data
+        contactno = form.contactno.data
+        license = form.license.data
+        carmodel = form.carmodel.data
+        summary = form.summary.data
+        sessionemail = form.sessionemail.data
+
+    url = 'Driverprofile/' + id
+    eachpub = root.child(url).get()
+    ud = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
+                eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'], eachpub['sessionemail'])
+
+    if request.method == 'POST':
+        udc = Updatedriver(name, password, nric, email, contactno, license, carmodel, summary, sessionemail)
+        if request.method == 'POST':
+            ud = root.child('Driverprofile/' + id)
+            ud.set({
+                'sessionemail' :session['Email'],
+                'Name': udc.get_name(),
+                'Password': udc.get_password(),
+                'NRIC': udc.get_nric(),
+                'Email': udc.get_email(),
+                'Contactno': udc.get_contactno(),
+                'License': udc.get_license(),
+                'Car Model': udc.get_carmodel(),
+                'Summary': udc.get_summary()})
+        return redirect(url_for("Driver_Profile.html"))
+    return render_template('update_dprofile.html', form=form)
 
 @app.route('/passengerprofile')
 def passengerprofile():
