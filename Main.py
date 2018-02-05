@@ -67,6 +67,7 @@ class createpassengerrideform(Form):
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'passenger' "} )
     sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+    schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
 
 @app.route("/")
 def homepage():
@@ -83,8 +84,10 @@ def createridepassenger():
             time = form.time.data
             userid = form.userid.data
             sessionemail = form.sessionemail.data
+            schedule = form.schedule.data
+            status="Active"
 
-            crd = createridep(userid,from_where,to_where,date,time,sessionemail)
+            crd = createridep(userid,from_where,to_where,date,time,sessionemail,schedule,status)
 
             crd_db = root.child('listofridepassenger')
             crd_db.push({
@@ -94,6 +97,8 @@ def createridepassenger():
                 'time': crd.get_time(),
                 'usertype':crd.get_usertype(),
                 'sessionemail': session['Email'],
+                'schedule':request.form.getlist('days'),
+                'status':"Active"
 
             })
 
@@ -138,9 +143,18 @@ def createridedriver():
                 'time': cdr.get_time(),
                 'usertype':cdr.get_usertype(),
                 'schedule':request.form.getlist('days'),
-                'status':"Active"
+                'status':"Inactive",
 
-
+            })
+            cdr_db.push({
+                'sessionemail': session['Email'],
+                'Starting position': cdr.get_from_where(),
+                'Destination': cdr.get_to(),
+                'date': cdr.get_date(),
+                'time': cdr.get_time(),
+                'usertype':cdr.get_usertype(),
+                'schedule':request.form.getlist('days'),
+                'status':"Active",
 
             })
 
@@ -162,11 +176,7 @@ def createridedriver():
 def myrides():
     listmyrides = root.child('listofridesp').get()
     list= []
-    if request.method=="POST":
-        id=session.get("sessionemail","")
-        status="Taken"
-        data={"status":status}
-        root.child("myrides/"+id).update(data)
+    
 
 
 
@@ -217,7 +227,7 @@ def listofridesP():
     list = []
     for pubid in listofridesp:
         eachupdate = listofridesp[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate["status"])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate["status"],eachupdate['status'])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
@@ -239,7 +249,7 @@ def ridedetail(id):
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'])
 
     return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),
                            status=ride.get_status(), ending=ride.get_from_where(), timing=ride.get_time(),
@@ -252,12 +262,14 @@ def ridedetails(id):
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
             if form.userid.data.lower() == '':
-                from_where = form.from_where.data
-                to_where = form.to_where.data
-                date = form.date.data
-                time = form.time.data
-                userid = form.userid.data
-                schedule = form.schedule.data
+                from_where= form.from_where.data
+            to_where = form.to_where.data
+            date = form.date.data
+            time = form.time.data
+            userid = form.userid.data
+            sessionemail = form.sessionemail.data
+            schedule = form.schedule.data
+            status="Taken"
 
     url = 'listofridesp/' + id
     eachpub = root.child(url).get()
@@ -268,16 +280,42 @@ def ridedetails(id):
     if request.method == "POST":
         if request.form["taken"] == "Interested?":
             status ="Taken"
+            rdc = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
             ride = root.child("listofridesp/" + id)
             ride.set({
-                "Starting position": from_where,
-                "Destination": to_where,
-                "date":date,
-                "sessionemail":session["Email"],
-                "time":time,
-                "usertype":userid,
-                "schedule":schedule,
-                "status": "Taken"})
+                'sessionemail': rdc.get_sessionemail(),
+                'Starting position': rdc.get_from_where(),
+                'Destination': rdc.get_to(),
+                'date': rdc.get_date(),
+                'time': rdc.get_time(),
+                'usertype':rdc.get_usertype(),
+                'schedule':request.form.getlist('days'),
+                'status':"Taken",
+                'schedule':rdc.get_schedule()})
+            print(sessionemail)
+            from_where= form.from_where.data
+            to_where = form.to_where.data
+            date = form.date.data
+            time = form.time.data
+            userid = form.userid.data
+            sessionemail = form.sessionemail.data
+            schedule = form.schedule.data
+            status="Taken"
+
+            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
+
+            cdr_db = root.child('listofridesp')
+            cdr_db.push({
+                'sessionemail': session['Email'],
+                'Starting position': cdr.get_from_where(),
+                'Destination': cdr.get_to(),
+                'date': cdr.get_date(),
+                'time': cdr.get_time(),
+                'usertype':cdr.get_usertype(),
+                'schedule':request.form.getlist('days'),
+                'status':"Taken",
+                'schedule':cdr.get_schedule()})
+
             return redirect(url_for("listofridesD"))
 
 
