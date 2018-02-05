@@ -176,7 +176,7 @@ def createridedriver():
 def myrides():
     listmyrides = root.child('listofridesp').get()
     list= []
-    
+
 
 
 
