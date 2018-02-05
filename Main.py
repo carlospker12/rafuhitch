@@ -251,7 +251,7 @@ def ridedetail(id):
 
     url = 'listofridepassenger/' + id
     eachpub = root.child(url).get()
-
+    # fsf
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
                              eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'],eachpub["status"])
     if request.method == "POST":
