@@ -112,7 +112,7 @@ def createridepassenger():
                     firstchild = root.child('userstuff')
                     firstchild.child(pubid).update({'Points': newp})
 
-            return redirect(url_for('listofridesdriver'))
+            return redirect(url_for('listofridesD'))
     return render_template('create_ride_passenger.html', form= form)
 
 @app.route('/createridedriver/',methods=["GET","POST"])
@@ -221,7 +221,7 @@ def listofridesP():
 @app.route('/ridedetail')
 @app.route('/ridedetail/<string:id>/', methods=['GET', 'POST'])
 def ridedetail(id):
-    form = createpassengerrideform(request.form)
+    form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
         if form.userid.data.lower() == '':
             from_where = form.from_where.data
@@ -229,15 +229,37 @@ def ridedetail(id):
             date = form.date.data
             time = form.time.data
             userid = form.userid.data
+            sessionemail = form.sessionemail.data
+            schedule = form.schedule.data
+            status="Taken"
+
     url = 'listofridepassenger/' + id
     eachpub = root.child(url).get()
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
-                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'])
+                             eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'],eachpub["status"])
+    if request.method == "POST":
+        if request.form["taken"] == "Interested?":
+            status ="Taken"
+            rdc = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
+            ride = root.child("listofridepassenger/" + id)
+            ride.set({
+                #'sessionemail': rdc.get_sessionemail(),
+                'sessionemail': session['Email'],
+                'Starting position': rdc.get_from_where(),
+                'Destination': rdc.get_to(),
+                'date': rdc.get_date(),
+                'time': rdc.get_time(),
+                'usertype':rdc.get_usertype(),
+                'schedule':request.form.getlist('days'),
+                'status':"Taken",
+                'schedule':rdc.get_schedule()})
 
-    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),
-                           status=ride.get_status(), ending=ride.get_from_where(), timing=ride.get_time(),
-                           dating=ride.get_date)
+
+            return redirect(url_for("listofridesP"))
+
+
+    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),status=ride.get_status() , ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date )
 
 
 @app.route('/ridedetails')

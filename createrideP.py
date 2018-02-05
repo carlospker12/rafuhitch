@@ -1,5 +1,5 @@
 class createridep:
-    def __init__(self, usertype, from_where, to, date, time,sessionemail,status="Active"):
+    def __init__(self, usertype, from_where, to, date, time,sessionemail,schedule,status="Active"):
         self.__pubid = ''
         self.__from_where = from_where
         self.__to = to
@@ -7,6 +7,12 @@ class createridep:
         self.__date = date
         self.__time = time
         self.__status=status
+        self.__schedule=schedule
+
+    def get_schedule(self):
+        return self.__schedule
+    def set_schedule(self,schedule):
+        self.__schedule=schedule
 
 
     def get_pubid(self):
