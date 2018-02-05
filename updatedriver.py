@@ -1,5 +1,5 @@
 class Updatedriver:
-    def __init__(self, name, password, nric, email, contactno, license, carmodel, summary, sessionemail):
+    def __init__(self, name, password, nric, email, contactno, license, carmodel, summary, points):
         self.__pubid = ''
         self.__name = name
         self.__password = password
@@ -9,6 +9,7 @@ class Updatedriver:
         self.__license = license
         self.__carmodel = carmodel
         self.__summary = summary
+        self.__points = points
 
     def set_name(self, name):
         self.__name = name
@@ -26,8 +27,8 @@ class Updatedriver:
         self.__carmodel = carmodel
     def set_summary(self, summary):
         self.__summary = summary
-    def set_sessionemail(self,sessionemail):
-        self.__sessionemail = sessionemail
+    def set_points(self,points):
+        self.__points = points
 
     def get_name(self):
         return self.__name
@@ -45,8 +46,8 @@ class Updatedriver:
         return self.__carmodel
     def get_summary(self):
         return self.__summary
-    def get_sessionemail(self):
-        return self.__sessionemail
+    def get_points(self):
+        return self.__points
 
     def get_pubid(self):
         return self.__pubid

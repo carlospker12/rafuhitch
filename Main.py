@@ -29,7 +29,7 @@ root = db.reference()
 
 
 drivervalidation = 'driver'
-app = Flask(__name__)
+
 
 class registereddriverform(Form):
     name = StringField('Name',[validators.DataRequired()])
@@ -51,6 +51,7 @@ class updateddriverform(Form):
     carmodel = StringField('Car Brand & Model', [validators.DataRequired()])
     summary = StringField('Summary', [validators.DataRequired()])
     sessionemail = StringField('Verification', render_kw={"placeholder": "Enter 'driver' "})
+    points = StringField('Points', [validators.DataRequired()])
 
 class createdriverrideform(Form):
     from_where = StringField('Starting Position',[validators.DataRequired()],render_kw={"placeholder": "Start"})
@@ -399,9 +400,10 @@ def driverprofile():
 
 # @app.route('/update')
 @app.route('/update_dprofile/<string:id>/', methods=['GET', 'POST'])
-def update_driverprofile(id):
+def edit(id):
+    points = Points.get_points()
     form = updateddriverform(request.form)
-    if request.method == 'POST' and form.validate() :
+    if request.method == 'POST' and form.validate():
         name = form.name.data
         password = form.password.data
         nric = form.nric.data
@@ -410,28 +412,47 @@ def update_driverprofile(id):
         license = form.license.data
         carmodel = form.carmodel.data
         summary = form.summary.data
-        sessionemail = form.sessionemail.data
+        points = points.get_points()
 
-    url = 'Driverprofile/' + id
-    eachpub = root.child(url).get()
-    ud = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
-                eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'], eachpub['sessionemail'])
+        url = 'Driverprofile/' + id
+        eachpub = root.child(url).get()
 
-    if request.method == 'POST':
-        udc = Updatedriver(name, password, nric, email, contactno, license, carmodel, summary, sessionemail)
-        if request.method == 'POST':
-            ud = root.child('Driverprofile/' + id)
-            ud.set({
-                'sessionemail' :session['Email'],
-                'Name': udc.get_name(),
-                'Password': udc.get_password(),
-                'NRIC': udc.get_nric(),
-                'Email': udc.get_email(),
-                'Contactno': udc.get_contactno(),
-                'License': udc.get_license(),
-                'Car Model': udc.get_carmodel(),
-                'Summary': udc.get_summary()})
-        return redirect(url_for("driverprofile"))
+        edits = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
+                eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'])
+
+        udc = Updatedriver(name, password, nric, email, contactno, license, carmodel, summary)
+
+        ud_db = root.child('Driverprofile/' + id)
+        ud_db.set({
+            'sessionemail' :session['Email'],
+            'Name': udc.get_name(),
+            'Password': udc.get_password(),
+            'NRIC': udc.get_nric(),
+            'Email': udc.get_email(),
+            'Contactno': udc.get_contactno(),
+            'License': udc.get_license(),
+            'Car Model': udc.get_carmodel(),
+            'Summary': udc.get_summary(),
+        flash('Changes sucessfully updated','success')
+
+        return redirect(url_for('driverprofile'))
+
+    else:
+        url = 'Driverprofile/' + id
+        eachpub = root.child(url).get()
+
+        edits = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
+                             eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'])
+
+        form.name.data = edits.get_name()
+        form.password.data = edits.get_password()
+        form.nric.data = edits.get_nric()
+        form.email.data = edits.get_email()
+        form.contactno.data = edits.get_contactno()
+        form.license.data = edits.get_license()
+        form.carmodel.data = edits.get_carmodel()
+        form.summary.data = edits.get_summary()
+
     return render_template('update_dprofile.html', form=form)
 
 @app.route('/passengerprofile')
