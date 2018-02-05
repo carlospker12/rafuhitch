@@ -142,6 +142,17 @@ def createridedriver():
                 'status':"Active",
 
             })
+            cdr_db.push({
+                'sessionemail': session['Email'],
+                'Starting position': cdr.get_from_where(),
+                'Destination': cdr.get_to(),
+                'date': cdr.get_date(),
+                'time': cdr.get_time(),
+                'usertype':cdr.get_usertype(),
+                'schedule':request.form.getlist('days'),
+                'status':"Taken",
+
+            })
 
             # dprofile = root.child('Driverprofile').get()
             #
@@ -255,7 +266,8 @@ def ridedetails(id):
             rdc = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
             ride = root.child("listofridesp/" + id)
             ride.set({
-                'sessionemail': rdc.get_sessionemail(),
+                #'sessionemail': rdc.get_sessionemail(),
+                'sessionemail': session['Email'],
                 'Starting position': rdc.get_from_where(),
                 'Destination': rdc.get_to(),
                 'date': rdc.get_date(),
