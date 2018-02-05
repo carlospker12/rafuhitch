@@ -8,7 +8,6 @@ from firebase_admin import credentials, db
 from signup import User
 from points import Points
 import os
-from schedule import schedule
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -49,7 +48,6 @@ class createdriverrideform(Form):
     sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
 
-
 class schedule(Form):
     Monday = StringField('0',render_kw={"placeholder": "Start"})
     Tuesday = StringField('1', render_kw={"placeholder": "End"})
@@ -66,8 +64,10 @@ class createpassengerrideform(Form):
     date = StringField('Date',render_kw={"placeholder": "DD/MM/YYYY"})
     time = StringField('Time',render_kw={"placeholder": "Time"})
     userid = StringField('Verification',render_kw={"placeholder": "Enter 'passenger' "} )
-    sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
     schedule = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+    sessionemail = StringField('Verification',render_kw={"placeholder": "Enter 'driver' "} )
+
+
 
 @app.route("/")
 def homepage():
@@ -102,7 +102,6 @@ def createridepassenger():
 
             })
 
-
             pprofile = root.child('userstuff').get()
             for pubid in pprofile:
                 pt = pprofile[pubid]
@@ -113,14 +112,12 @@ def createridepassenger():
                     firstchild = root.child('userstuff')
                     firstchild.child(pubid).update({'Points': newp})
 
-        return redirect(url_for('listofridesP'))
-
+            return redirect(url_for('listofridesdriver'))
     return render_template('create_ride_passenger.html', form= form)
 
 @app.route('/createridedriver/',methods=["GET","POST"])
 def createridedriver():
     form = createdriverrideform(request.form)
-    list = []
     if request.method == 'POST' and form.validate():
         if  form.userid.data.lower() == '':
             from_where= form.from_where.data
@@ -129,7 +126,6 @@ def createridedriver():
             time = form.time.data
             userid = form.userid.data
             sessionemail = form.sessionemail.data
-            schedule = form.schedule.data
             status="Active"
 
             cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
@@ -143,43 +139,28 @@ def createridedriver():
                 'time': cdr.get_time(),
                 'usertype':cdr.get_usertype(),
                 'schedule':request.form.getlist('days'),
-                'status':"Inactive",
-
-            })
-            cdr_db.push({
-                'sessionemail': session['Email'],
-                'Starting position': cdr.get_from_where(),
-                'Destination': cdr.get_to(),
-                'date': cdr.get_date(),
-                'time': cdr.get_time(),
-                'usertype':cdr.get_usertype(),
-                'schedule':request.form.getlist('days'),
                 'status':"Active",
 
             })
 
-            dprofile = root.child('Driverprofile').get()
-            for pubid in dprofile:
-                pt = dprofile[pubid]
-                if pt['Email'] == session['Email']:
-                    totalpoints = pt['Points']
-                    newp = int(totalpoints) + 10
-                    # print(newp)
-                    firstchild = root.child('Driverprofile')
-                    firstchild.child(pubid).update({'Points' : newp})
-            print(request.form.getlist('days'))
-            schedule = [request.form.getlist('days')]
-
+            # dprofile = root.child('Driverprofile').get()
+            #
+            # for pubid in dprofile:
+            #     pt = dprofile[pubid]
+            #     dprofile = Points(pt['Points'],pt['sessionemail'])
+            #     dprofile.set_pubid(pubid)
+            #     totalpoints = pt['Points']
+            #     newp = int(totalpoints) + 10
+            #     # print(newp)
+            #     firstchild = root.child('Driverprofile')
+            #     firstchild.child(pubid).update({'Points' : newp})
+            #
             return redirect(url_for('listofridesD'))
     return render_template('create_ride_driver.html', form= form)
 @app.route('/myrides/')
 def myrides():
     listmyrides = root.child('listofridesp').get()
     list= []
-
-
-
-
     for pubid in listmyrides:
         eachobj = listmyrides[pubid]
         myride = Createdriverride(eachobj['Starting position'],eachobj['Destination'],eachobj['date'],eachobj['time'],eachobj['usertype'],eachobj['sessionemail'],eachobj['status'])
@@ -203,23 +184,15 @@ def myrides():
 @app.route('/listofridesdriver')
 def listofridesD():
     listofridesd = root.child('listofridesp').get()
-    # schedulelist = root.child('listofridesp').order_by_child('schedule').get()
-    # list1 =[]
     list = []
-    # for sid in schedulelist:
-    #     eachid = schedulelist[sid]
-    #     scheduleid = schedule(eachid['0'],eachid['1'],eachid['2'],eachid['3'],eachid['4'],eachid['5'],eachid['6'])
-    #     scheduleid.set_sid(sid)
-    #     print(scheduleid.get_sid)
-    #     list1.append(scheduleid)
     for pubid in listofridesd:
         eachupdate = listofridesd[pubid]
         ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'],eachupdate["status"])
         ride.set_pubid(pubid)
-        # print(ride.get_pubid())
+        print(ride.get_pubid())
         list.append(ride)
 
-    return render_template('listofridesdriver.html',  listofridesd = list,schedulelist = list )
+    return render_template('listofridesdriver.html',  listofridesd = list )
 
 @app.route('/listofridespassenger')
 def listofridesP():
@@ -227,7 +200,7 @@ def listofridesP():
     list = []
     for pubid in listofridesp:
         eachupdate = listofridesp[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate["status"],eachupdate['status'])
+        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'],eachupdate["status"])
         ride.set_pubid(pubid)
         print(ride.get_pubid())
         list.append(ride)
@@ -261,8 +234,8 @@ def ridedetail(id):
 def ridedetails(id):
     form = createdriverrideform(request.form)
     if request.method == 'POST' and form.validate():
-            if form.userid.data.lower() == '':
-                from_where= form.from_where.data
+        if form.userid.data.lower() == '':
+            from_where = form.from_where.data
             to_where = form.to_where.data
             date = form.date.data
             time = form.time.data
@@ -276,7 +249,6 @@ def ridedetails(id):
 
     ride = Createdriverride( eachpub['Starting position'], eachpub['Destination'],
                              eachpub['date'], eachpub['time'],eachpub['usertype'],eachpub['sessionemail'],eachpub['schedule'],eachpub["status"])
-
     if request.method == "POST":
         if request.form["taken"] == "Interested?":
             status ="Taken"
@@ -292,34 +264,12 @@ def ridedetails(id):
                 'schedule':request.form.getlist('days'),
                 'status':"Taken",
                 'schedule':rdc.get_schedule()})
-            print(sessionemail)
-            from_where= form.from_where.data
-            to_where = form.to_where.data
-            date = form.date.data
-            time = form.time.data
-            userid = form.userid.data
-            sessionemail = form.sessionemail.data
-            schedule = form.schedule.data
-            status="Taken"
 
-            cdr = Createdriverride(userid,from_where,to_where,date,time,sessionemail,schedule,status)
-
-            cdr_db = root.child('listofridesp')
-            cdr_db.push({
-                'sessionemail': session['Email'],
-                'Starting position': cdr.get_from_where(),
-                'Destination': cdr.get_to(),
-                'date': cdr.get_date(),
-                'time': cdr.get_time(),
-                'usertype':cdr.get_usertype(),
-                'schedule':request.form.getlist('days'),
-                'status':"Taken",
-                'schedule':cdr.get_schedule()})
 
             return redirect(url_for("listofridesD"))
 
 
-    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),status=ride.get_status() , ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date)
+    return render_template('ridedetails.html', ride=ride, form=form, start=ride.get_usertype(),status=ride.get_status() , ending=ride.get_from_where(), timing=ride.get_time(),dating=ride.get_date )
 
 @app.route('/register', methods=["GET","POST"])
 def register():
@@ -391,16 +341,16 @@ def login():
 
 @app.route('/driverprofile')
 def driverprofile():
-
-    dprofile = root.child('Driverprofile').get()
+    driver = root.child('Driverprofile').get()
     list = []
-    for pubid in dprofile:
-        pt = dprofile[pubid]
-        if pt['Email'] == session['Email']:
-            totalpoints = pt['Name'], pt['Email'],  pt['Contactno'],  pt['License'],  pt['Car Model'],  pt['Points'], pt['Summary']
-            list.append(totalpoints)
-    return render_template('Driver_Profile.html', driverprofile = list)
+    for pubid in driver:
+        print('2', driver[pubid])
+        eachdriver = driver[pubid]
+        driver = Driver(eachdriver['Name'], eachdriver['Password'], eachdriver['NRIC'], eachdriver['Email'], eachdriver['Contactno'], eachdriver['License'], eachdriver['Car Model'], eachdriver['Points'], )
+        driver.set_pubid(pubid)
+        list.append(driver)
 
+    return render_template('Driver_Profile.html', driverprofile = list)
 
 @app.route('/passengerprofile')
 def passengerprofile():
@@ -447,7 +397,7 @@ def registerdriver():
         summary = request.form['summary']
         points= 0
 
-        rd = Driver(name, password, nric, email, contactno, license, carmodel, points, summary)
+        rd = Driver(name, password, nric, email, contactno, license, carmodel,points, summary)
 
         rd_db = root.child('Driverprofile')
         rd_db.push({
