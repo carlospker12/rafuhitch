@@ -103,6 +103,17 @@ def createridepassenger():
                 'status': "Active"
 
             })
+            crd_db.push({
+                'sessionemail': session['Email'],
+                'Starting position': crd.get_from_where(),
+                'Destination': crd.get_to(),
+                'date': crd.get_date(),
+                'time': crd.get_time(),
+                'usertype': crd.get_usertype(),
+                'schedule': request.form.getlist('days'),
+                'status': "Taken",
+
+            })
 
             pprofile = root.child('userstuff').get()
             for pubid in pprofile:
@@ -158,19 +169,20 @@ def createridedriver():
             })
 
 
-            # dprofile = root.child('Driverprofile').get()
-            #
-            # for pubid in dprofile:
-            #     pt = dprofile[pubid]
-            #     dprofile = Points(pt['Points'],pt['sessionemail'])
-            #     dprofile.set_pubid(pubid)
-            #     totalpoints = pt['Points']
-            #     newp = int(totalpoints) + 10
-            #     # print(newp)
-            #     firstchild = root.child('Driverprofile')
-            #     firstchild.child(pubid).update({'Points' : newp})
-            #
-            return redirect(url_for('listofridesD'))
+            dprofile = root.child('Driverprofile').get()
+
+            for pubid in dprofile:
+                pt = dprofile[pubid]
+                dprofile = Points(pt['Points'],pt['sessionemail'])
+                dprofile.set_pubid(pubid)
+                totalpoints = pt['Points']
+                newp = int(totalpoints) + 10
+                # print(newp)
+                firstchild = root.child('Driverprofile')
+                firstchild.child(pubid).update({'Points' : newp})
+
+            return redirect(url_for('myrides'
+                                    ''))
     return render_template('create_ride_driver.html', form=form)
 
 
