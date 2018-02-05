@@ -220,7 +220,7 @@ def listofridesD():
     #     list1.append(scheduleid)
     for pubid in listofridesd:
         eachupdate = listofridesd[pubid]
-        ride = Createdriverride( eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'],eachupdate["status"])
+        ride = Createdriverride(eachupdate['Starting position'], eachupdate['Destination'],eachupdate['date'], eachupdate['time'],eachupdate['usertype'],eachupdate['sessionemail'],eachupdate['schedule'],eachupdate["status"])
         ride.set_pubid(pubid)
         # print(ride.get_pubid())
         list.append(ride)
@@ -419,9 +419,9 @@ def edit(id):
 
         edits = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
                 eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'])
-
+        edits2 = Points(eachpub['Points'])
         udc = Updatedriver(name, password, nric, email, contactno, license, carmodel, summary)
-
+        points = Points(points)
         ud_db = root.child('Driverprofile/' + id)
         ud_db.set({
             'sessionemail' :session['Email'],
@@ -432,7 +432,8 @@ def edit(id):
             'Contactno': udc.get_contactno(),
             'License': udc.get_license(),
             'Car Model': udc.get_carmodel(),
-            'Summary': udc.get_summary(),
+            'Points': points.get_points(),
+            'Summary': udc.get_summary(),})
         flash('Changes sucessfully updated','success')
 
         return redirect(url_for('driverprofile'))
@@ -443,7 +444,8 @@ def edit(id):
 
         edits = Updatedriver(eachpub['Name'], eachpub['Password'], eachpub['NRIC'], eachpub['Email'],
                              eachpub['Contactno'], eachpub['License'], eachpub['Car Model'], eachpub['Summary'])
-
+        points = Points(eachpub['Points'])
+        form.points.data = points.get_points()
         form.name.data = edits.get_name()
         form.password.data = edits.get_password()
         form.nric.data = edits.get_nric()
